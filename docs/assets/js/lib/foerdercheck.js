@@ -37,7 +37,7 @@ function out(e, status, grund, schritt, extra = {}) {
 
 /** Normalisiert Eingaben, setzt sinnvolle Standardwerte und begrenzt Zahlen. */
 export function normalisiere(raw) {
-  const num = (v, d = 0) => { const n = Number(String(v ?? '').replace(',', '.')); return Number.isFinite(n) && n >= 0 ? n : d; };
+  const num = (v, d = 0) => { if (v == null || String(v).trim() === '') return d; const n = Number(String(v).replace(',', '.')); return Number.isFinite(n) && n >= 0 ? n : d; };
   return {
     land: raw.land === 'DE' ? 'DE' : 'AT',
     region: String(raw.region || ''),

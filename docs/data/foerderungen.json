@@ -175,7 +175,7 @@
       "gueltig_ab": "2026-01-01",
       "gueltig_bis": "2026-12-31",
       "stand": "2026-10-31",
-      "quelle_url": "https://www.waff.at/foerderungen/digi-winner/",
+      "quelle_url": "https://www.waff.at/foerderungen/digi-winner/online-antrag-digi-winner/",
       "geprueft_am": "2026-10-31",
       "werte": {
         "max_eur": 5000,
@@ -259,22 +259,22 @@
       "quelle_zusatz": ["https://www.revosax.sachsen.de/vorschrift/21486-Saechsisches-Qualifizierungszeitgesetz"],
       "geprueft_am": "2026-10-31",
       "laender": {
-        "BW": {"name": "Baden-Württemberg", "gesetz": "Bildungszeitgesetz (BzG BW)", "tage": 5, "jahre": 1, "frist_wochen": 9, "wartezeit_monate": null, "kleinbetrieb": "Betriebe mit weniger als zehn Beschäftigten am 1. Januar sind von der Freistellungspflicht ausgenommen.", "klein_ausschluss_unter": 10, "klein_pruefen_bis": null},
+        "BW": {"name": "Baden-Württemberg", "gesetz": "Bildungszeitgesetz (BzG BW)", "tage": 5, "jahre": 1, "frist_wochen": 9, "wartezeit_monate": 12, "kleinbetrieb": "Betriebe mit weniger als zehn Beschäftigten am 1. Januar sind von der Freistellungspflicht ausgenommen.", "klein_ausschluss_unter": 10, "klein_pruefen_bis": null},
         "BY": {"name": "Bayern", "gesetz": null, "tage": 0, "jahre": 1},
         "BE": {"name": "Berlin", "gesetz": "Berliner Bildungszeitgesetz (BiZeitG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "In Betrieben mit bis zu 20 Beschäftigten kann abgelehnt werden, wenn bereits 10 Prozent der gesamten Bildungszeit aller Berechtigten genommen oder bewilligt sind.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 20},
         "BB": {"name": "Brandenburg", "gesetz": "Brandenburgisches Erwachsenenbildungsgesetz (BbgEBG)", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "Kleinbetriebsschutz nach § 25 Abs. 3 BbgEBG, wenn im selben Jahr bereits eine bestimmte Zahl Beschäftigter freigestellt wurde.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 20},
         "HB": {"name": "Bremen", "gesetz": "Bremisches Bildungszeitgesetz (BremBZG)", "tage": 10, "jahre": 2, "frist_wochen": 4, "wartezeit_monate": 6, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
-        "HH": {"name": "Hamburg", "gesetz": "Hamburgisches Bildungsurlaubsgesetz", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "HH": {"name": "Hamburg", "gesetz": "Hamburgisches Bildungsurlaubsgesetz", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
         "HE": {"name": "Hessen", "gesetz": "Hessisches Gesetz über den Anspruch auf Bildungsurlaub (HBUG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn im laufenden Jahr bereits mehr als ein Drittel der Beschäftigten Bildungsurlaub genommen hat.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
         "MV": {"name": "Mecklenburg-Vorpommern", "gesetz": "Bildungsfreistellungsgesetz M-V (BfG M-V)", "tage": 10, "jahre": 2, "frist_wochen": 8, "wartezeit_monate": 6, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
-        "NI": {"name": "Niedersachsen", "gesetz": "Niedersächsisches Bildungsurlaubsgesetz (NBildUG)", "tage": 5, "jahre": 1, "frist_wochen": 4, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn die gewährten Freistellungstage das 2,5-Fache der am 30. April berechtigten Beschäftigten übersteigen.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "NI": {"name": "Niedersachsen", "gesetz": "Niedersächsisches Bildungsurlaubsgesetz (NBildUG)", "tage": 5, "jahre": 1, "frist_wochen": 4, "wartezeit_monate": 6, "kleinbetrieb": "Ablehnung möglich, wenn die gewährten Freistellungstage das 2,5-Fache der am 30. April berechtigten Beschäftigten übersteigen.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
         "NW": {"name": "Nordrhein-Westfalen", "gesetz": "Arbeitnehmerweiterbildungsgesetz (AWbG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "Ein Rechtsanspruch besteht in Betrieben und Dienststellen mit mehr als 10 Beschäftigten.", "klein_ausschluss_unter": 11, "klein_pruefen_bis": null},
         "RP": {"name": "Rheinland-Pfalz", "gesetz": "Bildungsfreistellungsgesetz (BFG)", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "In Betrieben mit weniger als fünf Beschäftigten besteht kein Rechtsanspruch.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null},
         "SL": {"name": "Saarland", "gesetz": "Saarländisches Bildungsfreistellungsgesetz (SBFG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "In Arbeitsstätten mit weniger als zehn Beschäftigten kann abgelehnt werden, wenn mehr als ein Drittel der Beschäftigten den Anspruch bereits geltend gemacht hat.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 9},
         "SN": {"name": "Sachsen", "gesetz": "Sächsisches Qualifizierungszeitgesetz (SächsQZG)", "tage": 3, "jahre": 1, "frist_wochen": 12, "wartezeit_monate": 6, "wartezeit_mehr_als": true, "gueltig_ab": "2027-01-01", "kleinbetrieb": "Dringende betriebliche Belange liegen auch vor, wenn im laufenden Jahr mehr als 25 Prozent der Beschäftigten Qualifizierungszeit nehmen.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null, "quelle_url": "https://www.revosax.sachsen.de/vorschrift/21486-Saechsisches-Qualifizierungszeitgesetz", "stand": "2026-02-04"},
-        "ST": {"name": "Sachsen-Anhalt", "gesetz": "Bildungsfreistellungsgesetz Sachsen-Anhalt", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn der Betrieb weniger als fünf Beschäftigte hat.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null},
+        "ST": {"name": "Sachsen-Anhalt", "gesetz": "Bildungsfreistellungsgesetz Sachsen-Anhalt", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "Arbeitgeber mit weniger als fünf Beschäftigten am 30. April müssen im laufenden Jahr nicht freistellen.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null},
         "SH": {"name": "Schleswig-Holstein", "gesetz": "Weiterbildungsgesetz Schleswig-Holstein (WBG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
-        "TH": {"name": "Thüringen", "gesetz": "Thüringer Bildungsfreistellungsgesetz (ThürBfG)", "tage": 5, "jahre": 1, "frist_wochen": 8, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null}
+        "TH": {"name": "Thüringen", "gesetz": "Thüringer Bildungsfreistellungsgesetz (ThürBfG)", "tage": 5, "jahre": 1, "frist_wochen": 8, "wartezeit_monate": null, "kleinbetrieb": "In Betrieben mit weniger als fünf Beschäftigten besteht kein Anspruch.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null}
       }
     },
     {

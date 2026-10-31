@@ -101,3 +101,17 @@ test('§ 87a nur bei Umschulung', () => {
 test('§ 82: bis 120 Stunden ausgeschlossen', () => {
   assert.equal(finde(pruefe(daten, { ...basisDE, gesamtstunden: 120 }, heute), 'de-82-beschaeftigte').status, 'passt_nicht');
 });
+
+test('Bildungsurlaub: Wartezeiten BW 12 Monate, HH/NI/ST 6 Monate', () => {
+  const bu = (region, monate) => finde(pruefe(daten, { land: 'DE', region, status: 'angestellt', monate, betrieb: 50, arbeitstage: 5 }, heute), 'de-bildungsurlaub').status;
+  assert.equal(bu('BW', 8), 'passt_nicht');
+  assert.equal(bu('BW', 13), 'passt');
+  for (const r of ['HH', 'NI', 'ST']) { assert.equal(bu(r, 3), 'passt_nicht', r); assert.equal(bu(r, 7), 'passt', r); }
+});
+test('Bildungsurlaub: Thüringen und Sachsen-Anhalt unter 5 Beschäftigten ohne Anspruch', () => {
+  for (const r of ['TH', 'ST']) assert.equal(finde(pruefe(daten, { land: 'DE', region: r, status: 'angestellt', monate: 24, betrieb: 3, arbeitstage: 5 }, heute), 'de-bildungsurlaub').status, 'passt_nicht', r);
+});
+test('Leere Arbeitstage gelten als Fünf-Tage-Woche', () => {
+  const e = finde(pruefe(daten, { land: 'DE', region: 'HE', status: 'angestellt', monate: 24, betrieb: 50, arbeitstage: '' }, heute), 'de-bildungsurlaub');
+  assert.equal(e.tage, 5);
+});
