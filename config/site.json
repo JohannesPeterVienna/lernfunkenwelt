@@ -1,0 +1,20 @@
+{
+  "origin": "https://lernfunkenwelt.de",
+  "name": "Lernfunkenwelt",
+  "claim": "Weiterbildung mit Plan",
+  "adsense": {
+    "client": "ca-pub-7811071715414905",
+    "slots": {
+      "leaderboard": "",
+      "mobileBanner": "",
+      "incontent": "",
+      "sidebar": ""
+    },
+    "_hinweis": "Werbeplätze werden erst ausgegeben (und Platz reserviert), wenn hier eine Slot-ID eingetragen ist. Danach `npm run build` ausführen. Auto-Anzeigen im AdSense-Konto für diese Domain ausgeschaltet lassen."
+  },
+  "ga4": "G-T00HRG2YVF",
+  "produkt_pdf_lernplaner": {
+    "aktiv": false,
+    "_hinweis": "Phase 2. Preis, Kauflink und Start nur nach Freigabe durch den Inhaber."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "lernfunkenwelt",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Lernfunkenwelt – Weiterbildung mit Plan. Statische Website (GitHub Pages aus docs/).",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:preview-ads": "node scripts/build.mjs --preview-ads --out=.preview",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/check-pages.mjs",
+    "e2e": "node scripts/e2e.mjs"
+  }
+}

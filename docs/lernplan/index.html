@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernplan-Generator: vom Prüfungsdatum zum Wiederholungskalender (.ics)</title>
+<meta name="description" content="Lernplan erstellen: Prüfungstag, Themen und Minuten je Wochentag eintragen – Stoff und Wiederholungen nach Studienlage, Export in den Kalender.">
+<link rel="canonical" href="https://lernfunkenwelt.de/lernplan/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<meta name="google-adsense-account" content="ca-pub-7811071715414905">
+<meta name="theme-color" content="#F5F3F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17121E" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_AT">
+<meta property="og:site_name" content="Lernfunkenwelt">
+<meta property="og:title" content="Lernplan-Generator">
+<meta property="og:description" content="Lernplan erstellen: Prüfungstag, Themen und Minuten je Wochentag eintragen – Stoff und Wiederholungen nach Studienlage, Export in den Kalender.">
+<meta property="og:url" content="https://lernfunkenwelt.de/lernplan/">
+<link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/literata-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7811071715414905" crossorigin="anonymous"></script>
+<script defer src="/assets/js/einwilligung.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://lernfunkenwelt.de/"},{"@type":"ListItem","position":2,"name":"Lernplan","item":"https://lernfunkenwelt.de/lernplan/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Lernplan-Generator mit Kalenderexport","url":"https://lernfunkenwelt.de/lernplan/","applicationCategory":"EducationalApplication","operatingSystem":"Browser","inLanguage":"de","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"AdStern","url":"https://lernfunkenwelt.de/","address":{"@type":"PostalAddress","streetAddress":"Seilerstätte 8","postalCode":"1010","addressLocality":"Wien","addressCountry":"AT"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Warum nicht einfach 1, 3, 7 und 14 Tage?","acceptedAnswer":{"@type":"Answer","text":"Feste Abstände ignorieren, wie lange der Stoff halten muss. Bei einer Prüfung in zwei Wochen sind 14 Tage zu spät, bei einer Prüfung in einem Jahr ist ein Tag sehr früh. Die Studienlage spricht für Abstände, die mit der Zeit bis zur Prüfung wachsen, relativ zu ihr aber kleiner werden."}},{"@type":"Question","name":"Wird mein Plan irgendwo gespeichert?","acceptedAnswer":{"@type":"Answer","text":"Nur in Ihrem Browser und nur, wenn Sie „Plan merken“ ankreuzen. Es gibt keinen Server und kein Konto. Auf der Datenschutzseite löschen Sie alle lokalen Daten mit einem Klick."}},{"@type":"Question","name":"Kann ich mehrere Prüfungen planen?","acceptedAnswer":{"@type":"Answer","text":"Ja, jeweils als eigener Plan mit eigener Kalenderdatei. Speichern Sie die Sicherungsdateien getrennt und importieren Sie die Kalender in eigene Kalender, damit Sie die Fächer farblich unterscheiden können."}}]}</script>
+</head>
+<body class="page-tool">
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+<header class="site-head"><div class="site-head__in">
+<a class="brand" href="/"><svg viewBox="0 0 64 40" aria-hidden="true" focusable="false"><g fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"><path d="M6 32 Q9 22 12 32"/><path d="M12 32 Q17 16 22 32"/><path d="M22 32 Q31 8 40 32"/><path d="M40 32 Q49 2 58 32" stroke-dasharray="1 4.2"/></g><line x1="3" y1="34.5" x2="61" y2="34.5" stroke="var(--muted)" stroke-width="1.4"/><circle cx="6" cy="32" r="4" fill="var(--spark)"/><rect x="55" y="27" width="6" height="7" rx="1" fill="var(--ink)"/></svg><span>Lernfunkenwelt<span class="brand__claim">Weiterbildung mit Plan</span></span></a>
+<nav class="nav" aria-label="Hauptnavigation"><a href="/foerder-check/">Förder-Check</a><a href="/lernplan/" aria-current="page">Lernplan</a><a href="/karteikarten/">Karteikarten</a><a href="/lerntechniken/">Lerntechniken</a><a href="/rechtschreibung/">Rechtschreibung</a><a href="/methodik-und-quellen/">Methodik</a></nav>
+<details class="menu"><summary>Menü</summary><nav class="menu__list" aria-label="Alle Seiten"><a href="/foerder-check/">Förder-Check</a><a href="/lernplan/" aria-current="page">Lernplan-Generator</a><a href="/karteikarten/">Karteikarten</a><a href="/rechtschreibung/">Rechtschreibtraining</a><a href="/weiterbildungszeit/">Weiterbildungszeit (AT)</a><a href="/fachkraeftestipendium/">Fachkräftestipendium (AT)</a><a href="/foerderung-wien-oberoesterreich/">Wien & Oberösterreich</a><a href="/bildungsurlaub/">Bildungsurlaub (DE)</a><a href="/aufstiegs-bafoeg-rechner/">Aufstiegs-BAföG-Rechner</a><a href="/foerderung-beschaeftigte-deutschland/">Förderung im Job (DE)</a><a href="/lerntechniken/">Lerntechniken</a><a href="/verteiltes-lernen/">Verteiltes Lernen</a><a href="/abrufen-statt-wiederlesen/">Abrufen statt Wiederlesen</a><a href="/lernen-neben-dem-job/">Lernen neben dem Job</a><a href="/berufsreifepruefung/">Berufsreifeprüfung</a><a href="/meister-fachwirt-vorbereitung/">Meister & Fachwirt</a><a href="/sprachzertifikat-vorbereitung/">Sprachzertifikat B1/B2</a><a href="/methodik-und-quellen/">Methodik & Quellen</a><a href="/ueber-uns/">Über uns</a></nav></details>
+</div></header>
+<div class="wrap"></div>
+<main id="inhalt" class="wrap">
+<nav class="crumbs" aria-label="Brotkrumen"><ol><li><a href="/">Startseite</a></li><li><span aria-current="page">Lernplan</span></li></ol></nav>
+<div class="layout">
+<div class="content">
+<div class="prose">
+<h1>Lernplan-Generator: vom Prüfungsdatum zum Wiederholungskalender</h1>
+<p class="lead">Tragen Sie Prüfungstag, Themen und Ihre freie Zeit pro Wochentag ein. Der Generator rechnet rückwärts, verteilt den neuen Stoff, legt Wiederholungen in wachsenden Abständen und reserviert die letzte Woche nur fürs Abrufen. Den fertigen Plan laden Sie als Kalenderdatei in Outlook, Google oder Apple Kalender.</p>
+<p class="meta-line"><span>Planungshilfe, kein Erfolgsversprechen</span><span>Alles bleibt in Ihrem Browser</span></p>
+</div>
+
+<section class="tool" aria-labelledby="lp-h">
+<h2 id="lp-h">Ihr Plan</h2>
+<form id="lp-form" novalidate>
+  <fieldset>
+    <legend>Zeitraum</legend>
+    <div class="cols">
+      <div class="field"><label for="lp-start">Start</label><input id="lp-start" name="start" type="date" required></div>
+      <div class="field"><label for="lp-pruefung">Prüfungstag</label><input id="lp-pruefung" name="pruefung" type="date" required></div>
+      <div class="field"><label for="lp-puffer">Puffer für Unvorhergesehenes</label><select id="lp-puffer" name="puffer"><option value="0">kein Puffer</option><option value="10">10 %</option><option value="20" selected>20 %</option><option value="30">30 %</option></select></div>
+      <div class="field"><label for="lp-tz">Zeitzone für den Kalender</label><select id="lp-tz" name="zeitzone"><option value="Europe/Vienna">Österreich</option><option value="Europe/Berlin">Deutschland</option></select></div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Themen</legend>
+    <div class="field"><label for="lp-vorlage">Vorlage laden (optional)</label><select id="lp-vorlage"><option value="">eigene Themen</option><option value="brp-mathematik">Berufsreifeprüfung Mathematik</option><option value="brp-deutsch">Berufsreifeprüfung Deutsch</option><option value="brp-englisch">Berufsreifeprüfung Englisch</option><option value="fachwirt">Fachwirt (IHK)</option><option value="meister-teil-3">Meister Teil III</option><option value="meister-teil-4">Meister Teil IV</option><option value="sprache-b1">Sprachzertifikat B1</option><option value="sprache-b2">Sprachzertifikat B2</option></select><p class="hint">Vorlagen bringen geschätzte Stunden je Thema mit. Eigene Themen rechnen mit 3, 6 oder 10 Stunden je nach Schwierigkeit.</p></div>
+    <div id="lp-themen"></div>
+    <button type="button" id="lp-add" class="btn btn--ghost btn--small">Thema hinzufügen</button>
+  </fieldset>
+  <fieldset>
+    <legend>Minuten pro Wochentag</legend>
+    <div id="lp-minuten" class="weekdays"></div>
+  </fieldset>
+  <div class="field"><label for="lp-sperr">Sperrtage (Urlaub, Schicht, Feiertage)</label><textarea id="lp-sperr" name="sperrtage" rows="2" placeholder="z. B. 24.12.2026, 25.12.2026"></textarea><p class="hint">Datumsangaben durch Komma oder Zeilenumbruch trennen. Feiertage finden Sie z. B. auf <a href="https://kalenderkompass24.de/" rel="noopener">kalenderkompass24.de</a>.</p></div>
+  <div class="choice"><input type="checkbox" id="lp-merken" name="merken"><label for="lp-merken">Plan auf diesem Gerät merken (localStorage)</label></div>
+  <p id="lp-fehler" class="error" role="alert" tabindex="-1" hidden></p>
+  <div class="btn-row"><button type="submit" class="btn">Plan erstellen</button></div>
+  <div class="btn-row">
+    <label class="btn btn--ghost btn--small" for="lp-import">Sicherung öffnen</label><input type="file" id="lp-import" accept=".json,application/json" class="visually-hidden">
+    <button type="button" id="lp-loeschen" class="btn btn--ghost btn--small">Gespeicherten Plan löschen</button>
+  </div>
+</form>
+<p id="lp-status" role="status" aria-live="polite"></p>
+<div id="lp-result" class="result"></div>
+<p id="lp-karten-hinweis" class="note note--plain" hidden>Tipp: Legen Sie zu jedem Thema ein paar <a href="/karteikarten/">Karteikarten</a> an. Tragen Sie dort denselben Prüfungstag ein, damit keine Karte erst nach der Prüfung fällig wird.</p>
+</section>
+
+<div class="prose">
+<h2>So rechnet der Generator</h2>
+<p><strong>1. Kapazität:</strong> Für jeden Tag zwischen Start und Prüfung nimmt der Generator Ihre Minuten für diesen Wochentag, setzt Sperrtage auf null und zieht den Puffer ab. Bei 60 Minuten und 20 Prozent Puffer plant er also 48 Minuten ein; die übrigen 12 fangen Überstunden, Krankheit oder einen zähen Abschnitt auf.</p>
+<p><strong>2. Neuer Stoff zuerst, aber nicht zu lange:</strong> Themen werden in der eingegebenen Reihenfolge bearbeitet. Ziel ist, dass aller neue Stoff in den ersten 60 Prozent der Zeit erledigt ist. Schafft der Plan das nicht, meldet er es, denn dann bleibt für Wiederholungen zu wenig Raum.</p>
+<p><strong>3. Wiederholungen in wachsenden Abständen:</strong> Ist ein Thema fertig, setzt der Generator die erste Wiederholung. Der Abstand richtet sich danach, wie lange es noch bis zur Prüfung ist. Grundlage sind die interpolierten Optimalwerte aus der Studie von Cepeda und Kollegen (2008): Bei 7 Tagen bis zum Test lag der beste Abstand bei etwa 43 Prozent dieser Zeit, bei 35 Tagen bei 23 Prozent, bei 70 Tagen bei 17 Prozent und bei 350 Tagen bei 8 Prozent. Dazwischen wird interpoliert. Nach jeder Wiederholung rechnet der Generator mit der verbleibenden Zeit neu, sodass die Abstände zur Prüfung hin kürzer werden.</p>
+<p><strong>4. Letzte Woche nur Abruf:</strong> Bei Plänen ab drei Wochen ist die letzte Woche für Abrufübungen reserviert: Probeaufgaben, Karteikarten, eine Probeklausur. Jedes Thema kommt dort mindestens einmal dran, schwere Themen zweimal. Neuer Stoff in den letzten Tagen fühlt sich produktiv an, bleibt aber am schlechtesten hängen.</p>
+<p><strong>5. Warnung bei Überlastung:</strong> Passt nicht alles in die verfügbare Zeit, zeigt der Plan, wie viele Stunden fehlen. Dann haben Sie drei Stellschrauben: Prüfung später legen, mehr Minuten pro Woche oder weniger Puffer.</p>
+
+
+
+<h2>Ein Beispiel</h2>
+<p>Eine Bürokauffrau in Graz will in zwölf Wochen die Teilprüfung Mathematik der Berufsreifeprüfung ablegen. Sie lädt die Vorlage „Berufsreifeprüfung Mathematik“ mit elf Themen und rund 113 Stunden Erstbearbeitung, trägt montags, dienstags und donnerstags je 60 Minuten, samstags 120 und sonntags 90 Minuten ein und lässt 20 Prozent Puffer. Das ergibt etwa 6,5 Stunden pro Woche, nach Puffer gut 5 Stunden – in zwölf Wochen also rund 62 Stunden. Der Generator meldet, dass etwa 50 Stunden fehlen. Sie hat zwei Möglichkeiten: den Termin um gut zwei Monate verschieben oder Themen, die sie aus dem Beruf kennt, als „leicht“ markieren und die Stundenschätzung senken. Sie wählt beides teilweise, legt die Prüfung sechs Wochen später und bekommt einen Plan, der aufgeht – mit drei bis vier Wiederholungen je Thema und einer reinen Abrufwoche am Ende.</p>
+
+<h2>Kalenderdatei, Druck und Sicherung</h2>
+<p>Die Kalenderdatei folgt dem Standard RFC 5545. Jeder Lernblock wird ein eigener Termin ab der Uhrzeit, die Sie wählen, mit fünf Minuten Pause zwischen den Blöcken; der Prüfungstag ist ein ganztägiger Termin. Auf Wunsch enthält jeder Termin eine Erinnerung. In Outlook öffnen Sie die Datei per Doppelklick, in Google Kalender über „Einstellungen → Importieren“, auf dem iPhone über „Teilen → Kalender“. Ändern Sie den Plan später, importieren Sie die neue Datei in einen eigenen Kalender, damit alte Termine nicht doppelt stehen.</p>
+<p>Über „Drucken / PDF“ erzeugt Ihr Browser eine schlichte Tagesliste ohne Menüs. Die Sicherungsdatei (.json) enthält den gesamten Plan inklusive erledigter Häkchen; Sie können sie auf einem anderen Gerät wieder öffnen.</p>
+
+<h2>Verpasste Einheiten neu planen</h2>
+<p>Kaum ein Plan hält zwölf Wochen ohne Abweichung. Haken Sie erledigte Blöcke ab. Klicken Sie auf „Verpasstes auf freie Tage verschieben“, sucht der Generator alle nicht abgehakten Blöcke vor heute und legt sie auf die nächsten Tage, an denen noch Kapazität frei ist. Was keinen Platz mehr findet, zeigt er als fehlende Minuten an. Spätestens dann lohnt ein ehrlicher Blick auf den Prüfungstermin.</p>
+
+<h2>Grenzen</h2>
+<p>Die Abstandsstudie untersuchte eine einzige Wiederholung von Faktenwissen; die wiederholte Anwendung auf mehrere Wiederholungen ist unsere Ableitung. Für Fertigkeiten wie Rechnen oder Schreiben braucht es zusätzlich Übung an neuen Aufgaben. Die Stundenschätzungen der Vorlagen sind Richtwerte für Erwachsene mit Grundkenntnissen. Der Generator kennt keine Feiertage; tragen Sie sie als Sperrtage ein.</p>
+
+<h2>Häufige Fragen</h2>
+<details class="faq"><summary><h3>Warum nicht einfach 1, 3, 7 und 14 Tage?</h3></summary><div><p>Feste Abstände ignorieren, wie lange der Stoff halten muss. Bei einer Prüfung in zwei Wochen sind 14 Tage zu spät, bei einer Prüfung in einem Jahr ist ein Tag sehr früh. Die Studienlage spricht für Abstände, die mit der Zeit bis zur Prüfung wachsen, relativ zu ihr aber kleiner werden.</p></div></details>
+<details class="faq"><summary><h3>Wird mein Plan irgendwo gespeichert?</h3></summary><div><p>Nur in Ihrem Browser und nur, wenn Sie „Plan merken“ ankreuzen. Es gibt keinen Server und kein Konto. Auf der Datenschutzseite löschen Sie alle lokalen Daten mit einem Klick.</p></div></details>
+<details class="faq"><summary><h3>Kann ich mehrere Prüfungen planen?</h3></summary><div><p>Ja, jeweils als eigener Plan mit eigener Kalenderdatei. Speichern Sie die Sicherungsdateien getrennt und importieren Sie die Kalender in eigene Kalender, damit Sie die Fächer farblich unterscheiden können.</p></div></details>
+
+<!-- Produkt-Platz „pdf-lernplaner“: deaktiviert, Freigabe durch den Inhaber ausstehend -->
+
+<h2>Quellen</h2>
+<ul class="sources">
+<li>Cepeda, N. J., Vul, E., Rohrer, D., Wixted, J. T. &amp; Pashler, H. (2008): Spacing effects in learning: A temporal ridgeline of optimal retention. Psychological Science 19(11) – <a href="https://www.evullab.org/pdf/CepedaVulRohrerWixtedPashler-PS-2008.pdf" rel="noopener">PDF</a> <span class="stand">Stand: Oktober 2026</span></li>
+<li>RFC 5545: Internet Calendaring and Scheduling Core Object Specification (iCalendar) – <a href="https://www.rfc-editor.org/rfc/rfc5545" rel="noopener">rfc-editor.org</a></li>
+</ul>
+</div>
+</div>
+
+</div>
+</main>
+<footer class="site-foot"><div class="site-foot__in"><div><h2>Förderung</h2><ul><li><a href="/foerder-check/">Förder-Check AT & DE</a></li><li><a href="/weiterbildungszeit/">Weiterbildungszeit</a></li><li><a href="/fachkraeftestipendium/">Fachkräftestipendium</a></li><li><a href="/foerderung-wien-oberoesterreich/">Wien & Oberösterreich</a></li><li><a href="/bildungsurlaub/">Bildungsurlaub</a></li><li><a href="/aufstiegs-bafoeg-rechner/">Aufstiegs-BAföG</a></li><li><a href="/foerderung-beschaeftigte-deutschland/">§ 82 SGB III & Bildungsgutschein</a></li></ul></div><div><h2>Lernen</h2><ul><li><a href="/lernplan/">Lernplan-Generator</a></li><li><a href="/karteikarten/">Karteikarten</a></li><li><a href="/rechtschreibung/">Rechtschreibtraining</a></li><li><a href="/lerntechniken/">Lerntechniken</a></li><li><a href="/verteiltes-lernen/">Verteiltes Lernen</a></li><li><a href="/abrufen-statt-wiederlesen/">Abrufen statt Wiederlesen</a></li><li><a href="/lernen-neben-dem-job/">Lernen neben dem Job</a></li></ul></div><div><h2>Prüfungen</h2><ul><li><a href="/berufsreifepruefung/">Berufsreifeprüfung</a></li><li><a href="/meister-fachwirt-vorbereitung/">Meister & Fachwirt</a></li><li><a href="/sprachzertifikat-vorbereitung/">Sprachzertifikat B1/B2</a></li></ul></div><div><h2>Lernfunkenwelt</h2><ul><li><a href="/ueber-uns/">Über uns</a></li><li><a href="/methodik-und-quellen/">Methodik & Quellen</a></li><li><a href="/kontakt/">Kontakt</a></li><li><a href="/impressum/">Impressum</a></li><li><a href="/datenschutz/">Datenschutz</a></li></ul></div></div>
+<div class="site-foot__base"><p>Lernfunkenwelt ist eine unabhängige Übersicht von AdStern, Wien – kein Angebot einer Behörde, des AMS, der Bundesagentur für Arbeit oder des waff. Inhalte für Erwachsene. Förderangaben sind Orientierung, verbindlich entscheidet die Förderstelle.</p>
+<p><button type="button" class="linkbtn" data-privacy-settings>Datenschutz-Einstellungen</button> <span id="privacy-hint" role="status" hidden></span> · <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p></div></footer>
+<script type="module" src="/assets/js/lernplan-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+{
+  "schema": 1,
+  "hinweis": "Orientierung, verbindlich entscheidet die Förderstelle. Jeder Eintrag nennt Quelle und Prüfdatum. Läuft gueltig_bis ab, zeigt der Förder-Check „wird geprüft“ statt alter Werte.",
+  "eintraege": [
+    {
+      "id": "at-weiterbildungsbeihilfe",
+      "land": "AT",
+      "region": null,
+      "name": "Weiterbildungsbeihilfe (Weiterbildungszeit)",
+      "traeger": "AMS",
+      "gueltig_ab": "2026-06-08",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-06-23",
+      "quelle_url": "https://www.ams.at/arbeitsuchende/aus-und-weiterbildung/so-foerdern-wir-ihre-aus--und-weiterbildung-/weiterbildungszeit-weiterbildungsteilzeit",
+      "quelle_zusatz": [
+        "https://www.ams.at/content/dam/download/allgemeine-informationen/001_wbb-pauschalsatztabelle.pdf",
+        "https://www.ams.at/regionen/burgenland/news/2026/06/weiterbildungsbeihilfe-neu-2026"
+      ],
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "beschaeftigung_monate": 12,
+        "beschaeftigung_monate_master": 48,
+        "wochenstunden_min": 20,
+        "wochenstunden_min_ohne_betreuung": 16,
+        "dauer_monate_min": 2,
+        "max_jahre": 1,
+        "rahmen_jahre": 4,
+        "tagsatz_min_eur": 41.49,
+        "halbe_hbgl_eur": 3465.00,
+        "arbeitgeberanteil_prozent": 15,
+        "antrag_frueheste_monate_vor_beginn": 3,
+        "budget_mio_eur": 150
+      },
+      "stufen_2026": [
+        {"von": 551.11, "bis": 1571.31, "tagsatz": 41.49, "dg": 0, "gesamt": 41.49},
+        {"von": 1571.32, "bis": 2053.99, "tagsatz": 43.09, "dg": 0, "gesamt": 43.09},
+        {"von": 2054.00, "bis": 2567.49, "tagsatz": 44.61, "dg": 0, "gesamt": 44.61},
+        {"von": 2567.50, "bis": 3080.99, "tagsatz": 47.28, "dg": 0, "gesamt": 47.28},
+        {"von": 3081.00, "bis": 3464.99, "tagsatz": 54.18, "dg": 0, "gesamt": 54.18},
+        {"von": 3465.00, "bis": 3594.49, "tagsatz": 46.06, "dg": 8.12, "gesamt": 54.18},
+        {"von": 3594.50, "bis": 4107.99, "tagsatz": 51.53, "dg": 9.09, "gesamt": 60.62},
+        {"von": 4108.00, "bis": 4621.49, "tagsatz": 56.71, "dg": 10.00, "gesamt": 66.71},
+        {"von": 4621.50, "bis": null, "tagsatz": 59.31, "dg": 10.46, "gesamt": 69.77}
+      ]
+    },
+    {
+      "id": "at-weiterbildungsteilzeitbeihilfe",
+      "land": "AT",
+      "region": null,
+      "name": "Weiterbildungsteilzeitbeihilfe",
+      "traeger": "AMS",
+      "gueltig_ab": "2026-06-08",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-06-23",
+      "quelle_url": "https://www.ams.at/arbeitsuchende/aus-und-weiterbildung/so-foerdern-wir-ihre-aus--und-weiterbildung-/weiterbildungszeit-weiterbildungsteilzeit",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "beschaeftigung_monate": 12,
+        "wochenstunden_min": 10,
+        "wochenstunden_min_ohne_betreuung": 8,
+        "dauer_monate_min": 4,
+        "max_jahre": 2,
+        "rahmen_jahre": 4,
+        "reduktion_min_prozent": 25,
+        "reduktion_max_prozent": 50
+      }
+    },
+    {
+      "id": "at-fachkraeftestipendium",
+      "land": "AT",
+      "region": null,
+      "name": "Fachkräftestipendium",
+      "traeger": "AMS",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-01-01",
+      "quelle_url": "https://www.ams.at/arbeitsuchende/aus-und-weiterbildung/so-foerdern-wir-ihre-aus--und-weiterbildung-/fachkraeftestipendium",
+      "quelle_zusatz": [
+        "https://www.ams.at/arbeitsuchende/arbeitslos-was-tun/massgebliche-werte",
+        "https://www.oesterreich.gv.at/themen/arbeit_beruf_und_pension/stipendien/fachkraeftestipendium_1.html"
+      ],
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "beschaeftigung_jahre": 4,
+        "beschaeftigung_wochen": 208,
+        "betrachtungszeitraum_jahre": 15,
+        "dauer_monate_min": 3,
+        "wochenstunden_min": 20,
+        "max_jahre": 3,
+        "genehmigung_frueheste_monate_vor_beginn": 3,
+        "tagsatz_eur": 41.00
+      }
+    },
+    {
+      "id": "at-wien-bildungskonto-alle",
+      "land": "AT",
+      "region": "W",
+      "name": "waff Bildungskonto für alle",
+      "traeger": "waff (Wiener ArbeitnehmerInnen Förderungsfonds)",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-10-16",
+      "quelle_url": "https://www.waff.at/foerderungen/bildungskonto/das-bildungskonto-fuer-alle/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "prozent": 50,
+        "max_eur": 500,
+        "kurskosten_min_eur": 150,
+        "antrag_spaetestens_monate_nach_abschluss": 3,
+        "zeitraum_jahre": 4
+      }
+    },
+    {
+      "id": "at-wien-bildungskonto-umfangreich",
+      "land": "AT",
+      "region": "W",
+      "name": "waff Bildungskonto für umfangreiche Weiterbildung",
+      "traeger": "waff",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-01-01",
+      "quelle_url": "https://www.waff.at/foerderungen/bildungskonto/das-bildungskonto-fuer-umfangreiche-weiterbildung/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "max_eur": 2000,
+        "staffel": [{"netto_bis": 2100, "prozent": 50}, {"netto_bis": 2500, "prozent": 40}, {"netto_bis": 2800, "prozent": 30}],
+        "kurskosten_min_eur": 150,
+        "antrag_spaetestens_wochen_nach_beginn": 4,
+        "zeitraum_jahre": 4
+      }
+    },
+    {
+      "id": "at-wien-bildungskonto-hoehere",
+      "land": "AT",
+      "region": "W",
+      "name": "waff Bildungskonto für höhere Abschlüsse",
+      "traeger": "waff",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-01-01",
+      "quelle_url": "https://www.waff.at/foerderungen/bildungskonto/das-bildungskonto-fuer-hoehere-abschluesse/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "max_eur": 3000,
+        "staffel": [{"netto_bis": 2100, "prozent": 50}, {"netto_bis": 2500, "prozent": 40}, {"netto_bis": 2800, "prozent": 30}],
+        "kurskosten_min_eur": 150,
+        "antrag_spaetestens_wochen_nach_beginn": 4
+      }
+    },
+    {
+      "id": "at-wien-bildungskonto-digital",
+      "land": "AT",
+      "region": "W",
+      "name": "waff Bildungskonto für Digitalisierung und Klimaschutz",
+      "traeger": "waff",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-10-16",
+      "quelle_url": "https://www.waff.at/foerderungen/bildungskonto/das-bildungskonto-fuer-digitalisierung-klimaschutz/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "max_eur": 5000,
+        "staffel": [{"netto_bis": 2100, "prozent": 50}, {"netto_bis": 2500, "prozent": 40}, {"netto_bis": 2800, "prozent": 30}],
+        "kurskosten_min_eur": 150,
+        "antrag_spaetestens_wochen_nach_beginn": 4,
+        "zeitraum_jahre": 4
+      }
+    },
+    {
+      "id": "at-wien-digi-winner",
+      "land": "AT",
+      "region": "W",
+      "name": "Digi-Winner (AK Wien und waff)",
+      "traeger": "AK Wien und waff",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2026-10-31",
+      "quelle_url": "https://www.waff.at/foerderungen/digi-winner/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "max_eur": 5000,
+        "prozent_min": 40,
+        "prozent_max": 80,
+        "netto_max_eur": 2500,
+        "max_eur_arbeitsort_ausserhalb_wien": 2500,
+        "antrag_spaetestens_wochen_nach_beginn": 4,
+        "zeitraum_jahre": 5
+      }
+    },
+    {
+      "id": "at-wien-chancen-scheck",
+      "land": "AT",
+      "region": "W",
+      "name": "waff Chancen-Scheck",
+      "traeger": "waff",
+      "gueltig_ab": "2026-01-01",
+      "gueltig_bis": "2026-12-31",
+      "stand": "2025-12-30",
+      "quelle_url": "https://www.waff.at/foerderungen/chancen-scheck/",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "prozent": 90,
+        "max_eur_abschluss": 5000,
+        "max_eur_weiterbildung": 3000,
+        "zeitraum_jahre": 2
+      }
+    },
+    {
+      "id": "at-ooe-bildungskonto",
+      "land": "AT",
+      "region": "OOE",
+      "name": "Oö. Bildungskonto",
+      "traeger": "Land Oberösterreich",
+      "gueltig_ab": "2023-01-01",
+      "gueltig_bis": "2028-12-31",
+      "stand": "2023-01-01",
+      "quelle_url": "https://www.land-oberoesterreich.gv.at/Mediendateien/Formulare/Formulare%20Bildung%20und%20Forschung/Richtlinien_Bildungskonto_2023_2028.pdf",
+      "quelle_zusatz": ["https://www.land-oberoesterreich.gv.at/bildungskonto.htm"],
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "prozent": 30,
+        "max_eur": 2200,
+        "prozent_meister": 40,
+        "max_eur_meister": 2400,
+        "prozent_sprache_beruf": 30,
+        "max_eur_deutsch_integration": 1000,
+        "kurskosten_min_eur": 150,
+        "antrag_spaetestens_monate_nach_ende": 6,
+        "anwesenheit_min_prozent": 75,
+        "akademiker_brutto_max_eur": 3000,
+        "kleinunternehmen_max_vzae": 5
+      }
+    },
+    {
+      "id": "at-weiterbildungsgeld-alt",
+      "land": "AT",
+      "region": null,
+      "name": "Weiterbildungsgeld für Bildungskarenz (altes Modell)",
+      "traeger": "AMS",
+      "gueltig_ab": null,
+      "gueltig_bis": null,
+      "stand": "2025-03-01",
+      "quelle_url": "https://www.wko.at/ooe/news/aus-fuer-weiterbildungsgeld-und-bildungsteilzeit-ab-1.-april",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "ende": "2025-04-01"
+      }
+    },
+    {
+      "id": "de-bildungsurlaub",
+      "land": "DE",
+      "region": "*",
+      "name": "Bildungsurlaub / Bildungszeit / Bildungsfreistellung",
+      "traeger": "Arbeitgeber (Freistellung nach Landesrecht)",
+      "gueltig_ab": null,
+      "gueltig_bis": "2027-10-31",
+      "stand": "2025-10-01",
+      "quelle_url": "https://lsjv.rlp.de/fileadmin/lsjv/Themen/Arbeit/Bildungsfreistellung/Bildungsfreistellung_in_den_Laendern_2026-2025.pdf",
+      "quelle_zusatz": ["https://www.revosax.sachsen.de/vorschrift/21486-Saechsisches-Qualifizierungszeitgesetz"],
+      "geprueft_am": "2026-10-31",
+      "laender": {
+        "BW": {"name": "Baden-Württemberg", "gesetz": "Bildungszeitgesetz (BzG BW)", "tage": 5, "jahre": 1, "frist_wochen": 9, "wartezeit_monate": null, "kleinbetrieb": "Betriebe mit weniger als zehn Beschäftigten am 1. Januar sind von der Freistellungspflicht ausgenommen.", "klein_ausschluss_unter": 10, "klein_pruefen_bis": null},
+        "BY": {"name": "Bayern", "gesetz": null, "tage": 0, "jahre": 1},
+        "BE": {"name": "Berlin", "gesetz": "Berliner Bildungszeitgesetz (BiZeitG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "In Betrieben mit bis zu 20 Beschäftigten kann abgelehnt werden, wenn bereits 10 Prozent der gesamten Bildungszeit aller Berechtigten genommen oder bewilligt sind.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 20},
+        "BB": {"name": "Brandenburg", "gesetz": "Brandenburgisches Erwachsenenbildungsgesetz (BbgEBG)", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "Kleinbetriebsschutz nach § 25 Abs. 3 BbgEBG, wenn im selben Jahr bereits eine bestimmte Zahl Beschäftigter freigestellt wurde.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 20},
+        "HB": {"name": "Bremen", "gesetz": "Bremisches Bildungszeitgesetz (BremBZG)", "tage": 10, "jahre": 2, "frist_wochen": 4, "wartezeit_monate": 6, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "HH": {"name": "Hamburg", "gesetz": "Hamburgisches Bildungsurlaubsgesetz", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "HE": {"name": "Hessen", "gesetz": "Hessisches Gesetz über den Anspruch auf Bildungsurlaub (HBUG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn im laufenden Jahr bereits mehr als ein Drittel der Beschäftigten Bildungsurlaub genommen hat.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "MV": {"name": "Mecklenburg-Vorpommern", "gesetz": "Bildungsfreistellungsgesetz M-V (BfG M-V)", "tage": 10, "jahre": 2, "frist_wochen": 8, "wartezeit_monate": 6, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "NI": {"name": "Niedersachsen", "gesetz": "Niedersächsisches Bildungsurlaubsgesetz (NBildUG)", "tage": 5, "jahre": 1, "frist_wochen": 4, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn die gewährten Freistellungstage das 2,5-Fache der am 30. April berechtigten Beschäftigten übersteigen.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "NW": {"name": "Nordrhein-Westfalen", "gesetz": "Arbeitnehmerweiterbildungsgesetz (AWbG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "Ein Rechtsanspruch besteht in Betrieben und Dienststellen mit mehr als 10 Beschäftigten.", "klein_ausschluss_unter": 11, "klein_pruefen_bis": null},
+        "RP": {"name": "Rheinland-Pfalz", "gesetz": "Bildungsfreistellungsgesetz (BFG)", "tage": 10, "jahre": 2, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "In Betrieben mit weniger als fünf Beschäftigten besteht kein Rechtsanspruch.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null},
+        "SL": {"name": "Saarland", "gesetz": "Saarländisches Bildungsfreistellungsgesetz (SBFG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": 6, "kleinbetrieb": "In Arbeitsstätten mit weniger als zehn Beschäftigten kann abgelehnt werden, wenn mehr als ein Drittel der Beschäftigten den Anspruch bereits geltend gemacht hat.", "klein_ausschluss_unter": null, "klein_pruefen_bis": 9},
+        "SN": {"name": "Sachsen", "gesetz": "Sächsisches Qualifizierungszeitgesetz (SächsQZG)", "tage": 3, "jahre": 1, "frist_wochen": 12, "wartezeit_monate": 6, "wartezeit_mehr_als": true, "gueltig_ab": "2027-01-01", "kleinbetrieb": "Dringende betriebliche Belange liegen auch vor, wenn im laufenden Jahr mehr als 25 Prozent der Beschäftigten Qualifizierungszeit nehmen.", "klein_ausschluss_unter": null, "klein_pruefen_bis": null, "quelle_url": "https://www.revosax.sachsen.de/vorschrift/21486-Saechsisches-Qualifizierungszeitgesetz", "stand": "2026-02-04"},
+        "ST": {"name": "Sachsen-Anhalt", "gesetz": "Bildungsfreistellungsgesetz Sachsen-Anhalt", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": "Ablehnung möglich, wenn der Betrieb weniger als fünf Beschäftigte hat.", "klein_ausschluss_unter": 5, "klein_pruefen_bis": null},
+        "SH": {"name": "Schleswig-Holstein", "gesetz": "Weiterbildungsgesetz Schleswig-Holstein (WBG)", "tage": 5, "jahre": 1, "frist_wochen": 6, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null},
+        "TH": {"name": "Thüringen", "gesetz": "Thüringer Bildungsfreistellungsgesetz (ThürBfG)", "tage": 5, "jahre": 1, "frist_wochen": 8, "wartezeit_monate": null, "kleinbetrieb": null, "klein_ausschluss_unter": null, "klein_pruefen_bis": null}
+      }
+    },
+    {
+      "id": "de-aufstiegs-bafoeg",
+      "land": "DE",
+      "region": null,
+      "name": "Aufstiegs-BAföG (AFBG)",
+      "traeger": "Bund und Länder, Darlehen über die KfW",
+      "gueltig_ab": null,
+      "gueltig_bis": "2027-10-31",
+      "stand": "2026-10-31",
+      "quelle_url": "https://www.gesetze-im-internet.de/afbg/__12.html",
+      "quelle_zusatz": [
+        "https://www.gesetze-im-internet.de/afbg/__2.html",
+        "https://www.gesetze-im-internet.de/afbg/__10.html",
+        "https://www.gesetze-im-internet.de/afbg/__13b.html",
+        "https://www.aufstiegs-bafoeg.de/aufstiegsbafoeg/de/die-foerderung/wie-wird-gefoerdert/wie-wird-gefoerdert_node.html",
+        "https://www.aufstiegs-bafoeg.de/aufstiegsbafoeg/de/die-foerderung/wer-wird-gefoerdert/wer-wird-gefoerdert_node.html"
+      ],
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "gebuehren_max_eur": 15000,
+        "zuschuss_prozent": 50,
+        "meisterstueck_max_eur": 2000,
+        "meisterstueck_anteil_materialkosten": 0.5,
+        "erlass_bestanden_prozent": 50,
+        "erlass_gruendung_prozent": 100,
+        "gruendung_frist_jahre": 3,
+        "kinderbetreuung_eur_monat": 150,
+        "unterhalt_max_alleinstehend_eur": 1019,
+        "unterhalt_zuschlag_partner_eur": 235,
+        "unterhalt_zuschlag_kind_eur": 235,
+        "mindest_unterrichtsstunden": 400,
+        "vollzeit_monate_max": 36,
+        "teilzeit_monate_max": 48,
+        "vollzeit_ustd_woche": 25,
+        "teilzeit_ustd_monat": 18,
+        "altersgrenze": null
+      }
+    },
+    {
+      "id": "de-82-beschaeftigte",
+      "land": "DE",
+      "region": null,
+      "name": "Weiterbildungsförderung Beschäftigter (§ 82 SGB III)",
+      "traeger": "Bundesagentur für Arbeit",
+      "gueltig_ab": null,
+      "gueltig_bis": "2027-10-31",
+      "stand": "2026-10-31",
+      "quelle_url": "https://www.gesetze-im-internet.de/sgb_3/__82.html",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "stunden_mehr_als": 120,
+        "abschluss_vor_jahren": 2,
+        "sperre_jahre": 2,
+        "ag_anteil": [{"bis_unter": 50, "prozent": 0}, {"bis_unter": 500, "prozent": 50}, {"bis_unter": null, "prozent": 75}],
+        "entgeltzuschuss": [{"bis_unter": 50, "prozent": 75}, {"bis_unter": 500, "prozent": 50}, {"bis_unter": null, "prozent": 25}],
+        "alter_ausnahme": 45,
+        "betriebsvereinbarung_punkte": 5
+      }
+    },
+    {
+      "id": "de-81-bildungsgutschein",
+      "land": "DE",
+      "region": null,
+      "name": "Bildungsgutschein (§ 81 SGB III)",
+      "traeger": "Agentur für Arbeit / Jobcenter",
+      "gueltig_ab": null,
+      "gueltig_bis": "2027-10-31",
+      "stand": "2026-10-31",
+      "quelle_url": "https://www.gesetze-im-internet.de/sgb_3/__81.html",
+      "quelle_zusatz": ["https://www.arbeitsagentur.de/karriere-und-weiterbildung/bildungsgutschein"],
+      "geprueft_am": "2026-10-31",
+      "werte": {}
+    },
+    {
+      "id": "de-87a-praemien",
+      "land": "DE",
+      "region": null,
+      "name": "Weiterbildungsprämie und Weiterbildungsgeld (§ 87a SGB III)",
+      "traeger": "Agentur für Arbeit / Jobcenter",
+      "gueltig_ab": null,
+      "gueltig_bis": "2027-10-31",
+      "stand": "2026-10-31",
+      "quelle_url": "https://www.gesetze-im-internet.de/sgb_3/__87a.html",
+      "geprueft_am": "2026-10-31",
+      "werte": {
+        "praemie_zwischen_eur": 1000,
+        "praemie_abschluss_eur": 1500,
+        "weiterbildungsgeld_eur_monat": 150
+      }
+    },
+    {
+      "id": "de-bildungspraemie-alt",
+      "land": "DE",
+      "region": null,
+      "name": "Bildungsprämie des Bundes (beendet)",
+      "traeger": "Bund",
+      "gueltig_ab": null,
+      "gueltig_bis": null,
+      "stand": "2022-01-01",
+      "quelle_url": "https://www.bibb.de/de/742.php",
+      "geprueft_am": "2026-10-31",
+      "werte": {"ende_gutscheinausgabe": "2021-12-31"}
+    }
+  ]
+}
