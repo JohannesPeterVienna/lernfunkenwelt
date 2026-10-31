@@ -65,15 +65,29 @@ const bu = document.getElementById('bu-form');
 if (bu) bu.addEventListener('submit', async ev => {
   ev.preventDefault();
   const e = await eintrag('de-bildungsurlaub');
-  const l = e.laender[bu.elements.land.value];
+  const l0 = e.laender[bu.elements.land.value];
   const tage = zahl(bu.elements.tage.value) || 5;
+  const beginn = bu.elements.beginn ? bu.elements.beginn.value : '';   // JJJJ-MM-TT oder leer
   const out = document.getElementById('bu-result');
-  if (!l.gesetz) { out.replaceChildren(el('p', { text: 'Bayern hat kein Bildungsurlaubsgesetz. Ein Anspruch kann sich nur aus Tarifvertrag, Betriebsvereinbarung oder Arbeitsvertrag ergeben.' })); return; }
+  if (!l0.gesetz) { out.replaceChildren(el('p', { text: 'Bayern hat kein Bildungsurlaubsgesetz. Ein Anspruch kann sich nur aus Tarifvertrag, Betriebsvereinbarung oder Arbeitsvertrag ergeben.' })); return; }
+  const datum = iso => iso.split('-').reverse().join('.');
+  // Länder mit Nachfolgeregelung (Niedersachsen: NBildZG ab 1.1.2027): maßgeblich ist der Kursbeginn.
+  const n = l0.nachfolger;
+  const neu = !!(n && beginn && beginn >= n.gueltig_ab);
+  const l = neu ? { ...l0, ...n } : l0;
   const a = bildungsurlaubAnspruch(l, tage);
+  const frist = (x) => `Antrag beim Arbeitgeber spätestens ${x.frist_wochen} Wochen vor Beginn`;
+  let fristText;
+  if (!n) fristText = frist(l) + '.';
+  else if (neu) fristText = `Kursbeginn ab ${datum(n.gueltig_ab)}: ${l.gesetz} – Mitteilung an den Arbeitgeber spätestens ${n.frist_wochen} Wochen vor Beginn in Textform.`;
+  else if (beginn) fristText = `Kursbeginn vor ${datum(n.gueltig_ab)}: noch ${l0.gesetz}, Antrag beim Arbeitgeber spätestens ${l0.frist_wochen} Wochen vor Beginn. Für Kurse ab ${datum(n.gueltig_ab)} gilt: ${n.gesetz}, Frist ${n.frist_wochen} Wochen.`;
+  else fristText = `Kursbeginn bis ${datum('2026-12-31')}: ${l0.gesetz}, Antrag spätestens ${l0.frist_wochen} Wochen vorher. Kursbeginn ab ${datum(n.gueltig_ab)}: ${n.gesetz}, Mitteilung spätestens ${n.frist_wochen} Wochen vorher in Textform. Tragen Sie den Kursbeginn ein, um nur die passende Regel zu sehen.`;
+  const gesetzText = n && !beginn ? `${l0.gesetz}; ab ${datum(n.gueltig_ab)} ${n.gesetz}` : l.gesetz;
   out.replaceChildren(
-    el('p', {}, el('strong', { text: `${l.name}: ${a.toLocaleString('de-DE')} Arbeitstage ${l.jahre === 2 ? 'in zwei Jahren' : 'pro Kalenderjahr'}` }), ` bei ${tage} Arbeitstagen pro Woche (${l.gesetz}).`),
-    el('p', { text: `Antrag beim Arbeitgeber spätestens ${l.frist_wochen} Wochen vor Beginn.` + (l.wartezeit_monate ? ` Anspruch erst nach ${l.wartezeit_mehr_als ? 'mehr als ' : ''}${l.wartezeit_monate} Monaten Beschäftigung.` : '') + (l.gueltig_ab ? ` Gilt ab ${l.gueltig_ab.split('-').reverse().join('.')}.` : '') }),
-    l.kleinbetrieb ? el('p', { text: l.kleinbetrieb }) : '',
+    el('p', {}, el('strong', { text: `${l.name}: ${a.toLocaleString('de-DE')} Arbeitstage ${l.jahre === 2 ? 'in zwei Jahren' : 'pro Kalenderjahr'}` }), ` bei ${tage} Arbeitstagen pro Woche (${gesetzText}).`),
+    el('p', { text: fristText + (l.wartezeit_monate ? ` Anspruch erst nach ${l.wartezeit_mehr_als ? 'mehr als ' : ''}${l.wartezeit_monate} Monaten Beschäftigung.` : '') + (l.gueltig_ab && !n ? ` Gilt ab ${datum(l.gueltig_ab)}.` : '') }),
+    n && (neu || !beginn) && n.hinweis ? el('p', { text: n.hinweis }) : '',
+    l.kleinbetrieb && (!n || (beginn && !neu)) ? el('p', { text: l.kleinbetrieb }) : '',
     el('p', { class: 'hint', text: 'Bei unregelmäßigen Arbeitstagen rechnen manche Länder mit dem Jahresdurchschnitt. Orientierung, verbindlich ist das Landesgesetz.' })
   );
 });

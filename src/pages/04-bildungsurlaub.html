@@ -40,6 +40,7 @@
     <div class="field"><label for="bu-land">Bundesland des Arbeitsplatzes</label><select id="bu-land" name="land">
       <option value="BW">Baden-Württemberg</option><option value="BY">Bayern</option><option value="BE">Berlin</option><option value="BB">Brandenburg</option><option value="HB">Bremen</option><option value="HH">Hamburg</option><option value="HE">Hessen</option><option value="MV">Mecklenburg-Vorpommern</option><option value="NI">Niedersachsen</option><option value="NW" selected>Nordrhein-Westfalen</option><option value="RP">Rheinland-Pfalz</option><option value="SL">Saarland</option><option value="SN">Sachsen (ab 2027)</option><option value="ST">Sachsen-Anhalt</option><option value="SH">Schleswig-Holstein</option><option value="TH">Thüringen</option></select></div>
     <div class="field"><label for="bu-tage">Arbeitstage pro Woche</label><input id="bu-tage" name="tage" type="number" min="1" max="6" step="0.5" value="5" inputmode="decimal"></div>
+    <div class="field"><label for="bu-beginn">Kursbeginn (optional)</label><input id="bu-beginn" name="beginn" type="date" aria-describedby="bu-beginn-hinweis"><p class="hint" id="bu-beginn-hinweis">Wichtig für Länder mit neuer Rechtslage, etwa Niedersachsen ab 1.1.2027.</p></div>
   </div>
   <div class="btn-row"><button class="btn" type="submit">Anspruch berechnen</button></div>
 </form>
