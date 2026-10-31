@@ -75,11 +75,11 @@ const basisDE = { land: 'DE', region: 'NW', status: 'angestellt', monate: 24, ar
 test('Aufstiegs-BAföG: 9.800 € → 4.900 € Zuschuss, unter 400 Std. ausgeschlossen', () => {
   const r = finde(pruefe(daten, basisDE, heute), 'de-aufstiegs-bafoeg');
   assert.equal(r.status, 'passt'); assert.equal(r.betrag, 4900);
-  assert.equal(finde(pruefe(daten, { ...basisDE, gesamtstunden: 300 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
+  assert.equal(finde(pruefe(daten, { ...basisDE, gesamtstunden: 150 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
   assert.equal(finde(pruefe(daten, { ...basisDE, kosten: 20000 }, heute), 'de-aufstiegs-bafoeg').betrag, 7500);
 });
-test('Bildungsurlaub: NRW > 10 Beschäftigte passt, 8 Beschäftigte nicht; Bayern ohne Gesetz', () => {
-  assert.equal(finde(pruefe(daten, basisDE, heute), 'de-bildungsurlaub').status, 'passt');
+test('Bildungsurlaub: NRW über 50 Beschäftigte passt, 8 Beschäftigte nicht; Bayern ohne Gesetz', () => {
+  assert.equal(finde(pruefe(daten, { ...basisDE, betrieb: 51 }, heute), 'de-bildungsurlaub').status, 'passt');
   assert.equal(finde(pruefe(daten, { ...basisDE, betrieb: 8 }, heute), 'de-bildungsurlaub').status, 'passt_nicht');
   assert.equal(finde(pruefe(daten, { ...basisDE, region: 'BY' }, heute), 'de-bildungsurlaub').status, 'passt_nicht');
 });
@@ -114,4 +114,80 @@ test('Bildungsurlaub: Thüringen und Sachsen-Anhalt unter 5 Beschäftigten ohne 
 test('Leere Arbeitstage gelten als Fünf-Tage-Woche', () => {
   const e = finde(pruefe(daten, { land: 'DE', region: 'HE', status: 'angestellt', monate: 24, betrieb: 50, arbeitstage: '' }, heute), 'de-bildungsurlaub');
   assert.equal(e.tage, 5);
+});
+
+// ---------- Codex-Gegencheck 31.10.2026: Grenzfälle ----------
+const bu = (eing) => finde(pruefe(daten, { land: 'DE', status: 'angestellt', art: 'kurs', arbeitstage: 5, betrieb: 100, ...eing }, heute), 'de-bildungsurlaub');
+
+test('OÖ-Bildungskonto: Sprachkurs 8.000 € → höchstens 1.000 € (nicht 2.200 €)', () => {
+  const r = finde(pruefe(daten, { land: 'AT', region: 'OOE', status: 'angestellt', monate: 24, art: 'sprache', kosten: 8000 }, heute), 'at-ooe-bildungskonto');
+  assert.equal(r.betrag, 1000);
+  assert.equal(r.status, 'pruefen');
+  assert.match(r.grund, /berufsspezifische Sprachkurse und Deutsch-Integrationskurse/);
+  assert.doesNotMatch(r.grund, /2\.200/);
+});
+test('OÖ-Bildungskonto: allgemeiner Kurs bleibt bei 2.200 €, Meister 2.400 €', () => {
+  const b = { land: 'AT', region: 'OOE', status: 'angestellt', monate: 24, kosten: 10000 };
+  assert.equal(finde(pruefe(daten, { ...b, art: 'kurs' }, heute), 'at-ooe-bildungskonto').betrag, 2200);
+  assert.equal(finde(pruefe(daten, { ...b, art: 'meister' }, heute), 'at-ooe-bildungskonto').betrag, 2400);
+});
+test('Bildungsurlaub SH und TH: 1 Monat → passt nicht, 6 Monate → passt', () => {
+  for (const region of ['SH', 'TH']) {
+    assert.equal(bu({ region, monate: 1 }).status, 'passt_nicht', region);
+    assert.equal(bu({ region, monate: 6 }).status, 'passt', region);
+  }
+});
+test('Bildungsurlaub Berlin und Hessen: 1 Monat → genauer prüfen (Anschlussregel), nie passt', () => {
+  assert.equal(bu({ region: 'BE', monate: 1, betrieb: 100 }).status, 'pruefen');
+  assert.match(bu({ region: 'BE', monate: 1 }).grund, /unmittelbar an ein Arbeits- oder Ausbildungsverhältnis/);
+  assert.equal(bu({ region: 'HE', monate: 1 }).status, 'pruefen');
+  assert.equal(bu({ region: 'BE', monate: 6, betrieb: 100 }).status, 'passt');
+  assert.equal(bu({ region: 'HE', monate: 6 }).status, 'passt');
+});
+test('Bildungsurlaub: fehlende Beschäftigungsdauer → genauer prüfen, nie passt', () => {
+  for (const region of ['BE', 'HE', 'SH', 'TH', 'NW', 'HH']) assert.notEqual(bu({ region, monate: '' }).status, 'passt', region);
+  assert.equal(bu({ region: 'SH', monate: '' }).status, 'pruefen');
+});
+test('Bildungsurlaub: unbekannte Wartezeit im Datensatz → genauer prüfen', () => {
+  const d2 = structuredClone(daten);
+  d2.eintraege.find(e => e.id === 'de-bildungsurlaub').laender.SH.wartezeit_monate = null;
+  const r = finde(pruefe(d2, { land: 'DE', region: 'SH', status: 'angestellt', monate: 24, betrieb: 100 }, heute), 'de-bildungsurlaub');
+  assert.equal(r.status, 'pruefen');
+});
+test('Bildungsurlaub: alle Länder mit Gesetz haben eine Wartezeit hinterlegt', () => {
+  const l = daten.eintraege.find(e => e.id === 'de-bildungsurlaub').laender;
+  for (const [k, v] of Object.entries(l)) if (v.gesetz) assert.ok(v.wartezeit_monate > 0, k);
+});
+test('Bildungsurlaub NRW: 9 → nein, 10 → genauer prüfen (10-%-Regel), 50 → prüfen, 51 → passt', () => {
+  assert.equal(bu({ region: 'NW', monate: 24, betrieb: 9 }).status, 'passt_nicht');
+  assert.equal(bu({ region: 'NW', monate: 24, betrieb: 10 }).status, 'pruefen');
+  assert.match(bu({ region: 'NW', monate: 24, betrieb: 10 }).grund, /zehn Prozent/);
+  assert.equal(bu({ region: 'NW', monate: 24, betrieb: 50 }).status, 'pruefen');
+  assert.equal(bu({ region: 'NW', monate: 24, betrieb: 51 }).status, 'passt');
+});
+test('Bildungsurlaub-Rechner: Berlin rundet auf, Sachsen erhöht nicht über 3 Tage', () => {
+  const l = daten.eintraege.find(e => e.id === 'de-bildungsurlaub').laender;
+  assert.equal(bildungsurlaubAnspruch(l.BE, 2.5), 3);
+  assert.equal(bildungsurlaubAnspruch(l.BE, 5), 5);
+  assert.equal(bildungsurlaubAnspruch(l.BE, 6), 6);
+  assert.equal(bildungsurlaubAnspruch(l.BE, 3), 3);
+  assert.equal(bildungsurlaubAnspruch(l.SN, 6), 3);
+  assert.equal(bildungsurlaubAnspruch(l.SN, 5), 3);
+  assert.equal(bildungsurlaubAnspruch(l.SN, 2.5), 1.5);
+});
+test('Bildungsurlaub Niedersachsen: ab 2027 NBildZG mit 8 Wochen Frist, 2026 NBildUG', () => {
+  const alt = bu({ region: 'NI', monate: 24, kursbeginn: '2026-12-01' });
+  assert.match(alt.grund, /NBildUG/); assert.match(alt.schritt, /4 Wochen/);
+  const neu = bu({ region: 'NI', monate: 24, kursbeginn: '2027-02-01' });
+  assert.match(neu.grund, /NBildZG/); assert.match(neu.schritt, /8 Wochen/);
+  assert.match(neu.quelle_url, /mwk\.niedersachsen/);
+  assert.match(bu({ region: 'NI', monate: 24 }).grund, /Ab 1\. Jänner 2027 gilt das NBildZG/);
+});
+test('Aufstiegs-BAföG: 300 Std. in 12 Monaten → genauer prüfen (§ 2 Abs. 3 Satz 2), 150 Std. nein', () => {
+  const b = { land: 'DE', region: 'NW', status: 'angestellt', monate: 24, art: 'meister', kosten: 3000 };
+  const r = finde(pruefe(daten, { ...b, gesamtstunden: 300, dauerMonate: 12 }, heute), 'de-aufstiegs-bafoeg');
+  assert.equal(r.status, 'pruefen'); assert.match(r.grund, /§ 53b BBiG/);
+  assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 300, dauerMonate: 40 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
+  assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 199, dauerMonate: 12 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
+  assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 400, dauerMonate: 40 }, heute), 'de-aufstiegs-bafoeg').status, 'passt');
 });

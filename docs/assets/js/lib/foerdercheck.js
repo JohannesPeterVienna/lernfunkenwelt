@@ -43,6 +43,7 @@ export function normalisiere(raw) {
     region: String(raw.region || ''),
     status: ['angestellt', 'arbeitslos', 'selbststaendig', 'karenz'].includes(raw.status) ? raw.status : 'angestellt',
     monate: num(raw.monate),
+    monateBekannt: raw.monate != null && String(raw.monate).trim() !== '',
     art: ['kurs', 'studium', 'meister', 'lehrabschluss', 'sprache', 'digital', 'matura', 'umschulung'].includes(raw.art) ? raw.art : 'kurs',
     wochenstunden: num(raw.wochenstunden),
     dauerMonate: num(raw.dauerMonate),
@@ -162,10 +163,11 @@ function ooe(e, x) {
   if (x.status === 'arbeitslos' && x.monate === 0) return out(e, STATUS.PRUEFEN, 'Arbeitslosengeld- oder Notstandshilfebeziehende sind förderbar, Arbeitsuchende ohne früheren Arbeitnehmerstatus nicht.', 'Status mit dem Land OÖ klären.');
   if (x.hochschule && x.brutto != null && x.brutto > w.akademiker_brutto_max_eur) return out(e, STATUS.NEIN, `Mit akademischem Abschluss gilt eine Grenze von ${eur(w.akademiker_brutto_max_eur)} brutto im Monat.`, '');
   const meister = x.art === 'meister';
-  const pr = meister ? w.prozent_meister : w.prozent;
-  const max = meister ? w.max_eur_meister : w.max_eur;
+  const sprache = x.art === 'sprache';
+  const pr = meister ? w.prozent_meister : sprache ? w.prozent_sprache : w.prozent;
+  const max = meister ? w.max_eur_meister : sprache ? w.max_eur_sprache : w.max_eur;
   const b = x.kosten ? Math.min(x.kosten * pr / 100, max) : null;
-  const sprach = x.art === 'sprache' ? ' Sprachkurse sind nur förderbar, wenn sie berufsspezifisch sind (oder Deutsch-Integrationskurse A1–B2, max. 1.000 €).' : '';
+  const sprach = sprache ? ` Gefördert werden nur berufsspezifische Sprachkurse und Deutsch-Integrationskurse; für beide gilt der Höchstbetrag von ${eur(w.max_eur_sprache)}. Nicht berufsspezifische Sprachkurse sind ausgeschlossen.` : '';
   return out(e, x.art === 'sprache' ? STATUS.PRUEFEN : STATUS.PASST, `${pr} % der Kurskosten, höchstens ${eur(max)} im Zeitraum 2023–2028${b != null ? ` – rechnerisch ${eur(b)}` : ''}. Prüfungsgebühren zählen nicht dazu.${sprach}`, 'Kurs bei zertifiziertem Anbieter belegen, 75 % Anwesenheit nachweisen, Antrag bis 6 Monate nach Kursende.', { betrag: b });
 }
 
@@ -174,12 +176,24 @@ function ooe(e, x) {
 /** Bildungsurlaub: Anspruch nach Land, Arbeitstagen und Betriebsgröße. */
 export function bildungsurlaubAnspruch(land, arbeitstage = 5) {
   if (!land || !land.tage) return 0;
-  return Math.round((land.tage * arbeitstage / 5) * 10) / 10;
+  // Sachsen: nur Verringerung unter fünf Arbeitstagen, keine Erhöhung (§ 2 Abs. 2 SächsQZG)
+  const tage = land.nur_verringern ? Math.min(arbeitstage, 5) : arbeitstage;
+  const roh = land.tage * tage / 5;
+  // Berlin: Bruchteile werden zugunsten der Beschäftigten aufgerundet (§ 2 Abs. 2 BiZeitG)
+  if (land.rundung === 'auf') return Math.ceil(roh - 1e-9);
+  return Math.round(roh * 10) / 10;
+}
+
+/** Niedersachsen u. a.: Nachfolgeregelung ab Stichtag einblenden. */
+function landZumKurs(l, kursbeginn) {
+  if (l.nachfolger && kursbeginn && kursbeginn >= l.nachfolger.gueltig_ab) return { ...l, ...l.nachfolger, nachfolger: null, nachfolgerAktiv: true };
+  return l;
 }
 
 function bildungsurlaub(e, x) {
-  const l = e.laender[x.region];
-  if (!l) return out(e, STATUS.PRUEFEN, 'Bitte Bundesland wählen.', '');
+  const l0 = e.laender[x.region];
+  if (!l0) return out(e, STATUS.PRUEFEN, 'Bitte Bundesland wählen.', '');
+  const l = landZumKurs(l0, x.kursbeginn);
   const ex = { quelle_url: l.quelle_url || e.quelle_url, stand: l.stand || e.stand };
   const name = `${e.name} – ${l.name}`;
   if (!l.gesetz) return { ...out(e, STATUS.NEIN, 'Bayern hat kein Gesetz über Bildungsurlaub. Freistellung gibt es nur über Tarifvertrag, Betriebsvereinbarung oder Absprache.', 'Tarifvertrag und Arbeitsvertrag prüfen, mit dem Arbeitgeber sprechen.'), ...ex, name };
@@ -189,9 +203,17 @@ function bildungsurlaub(e, x) {
   const zeitraum = l.jahre === 2 ? 'in zwei Jahren' : 'pro Kalenderjahr';
   const teile = [`${l.gesetz}: ${tage} Arbeitstage ${zeitraum} bei ${x.arbeitstage} Arbeitstagen pro Woche.`];
   let st = STATUS.PASST;
-  if (l.wartezeit_monate && x.monate < l.wartezeit_monate + (l.wartezeit_mehr_als ? 0.01 : 0)) { st = STATUS.NEIN; teile.push(`Der Anspruch entsteht erst nach ${l.wartezeit_mehr_als ? 'mehr als ' : ''}${l.wartezeit_monate} Monaten Beschäftigung.`); }
+  const warte = `${l.wartezeit_mehr_als ? 'mehr als ' : ''}${l.wartezeit_monate} Monaten`;
+  if (!l.wartezeit_monate) { st = STATUS.PRUEFEN; teile.push('Die Wartezeit ist hier nicht hinterlegt; bitte im Landesgesetz nachsehen.'); }
+  else if (!x.monateBekannt) { st = STATUS.PRUEFEN; teile.push(`Der Anspruch entsteht erst nach ${warte} Beschäftigung; bitte die Beschäftigungsdauer angeben.`); }
+  else if (x.monate < l.wartezeit_monate + (l.wartezeit_mehr_als ? 0.01 : 0)) {
+    st = l.wartezeit_anschluss ? STATUS.PRUEFEN : STATUS.NEIN;
+    teile.push(`Der Anspruch entsteht erst nach ${warte} Beschäftigung.${l.wartezeit_anschluss ? ' ' + l.wartezeit_anschluss : ''}`);
+  }
   if (x.betrieb && l.klein_ausschluss_unter && x.betrieb < l.klein_ausschluss_unter) { st = STATUS.NEIN; teile.push(l.kleinbetrieb); }
-  else if (l.kleinbetrieb && st === STATUS.PASST && (!x.betrieb || (l.klein_pruefen_bis && x.betrieb <= l.klein_pruefen_bis))) { st = STATUS.PRUEFEN; teile.push(l.kleinbetrieb); }
+  else if (l.kleinbetrieb && (!x.betrieb || (l.klein_pruefen_bis && x.betrieb <= l.klein_pruefen_bis))) { if (st === STATUS.PASST) st = STATUS.PRUEFEN; teile.push(l.kleinbetrieb); }
+  if (l.nachfolger && !x.kursbeginn) teile.push(l.nachfolger.hinweis);
+  else if (l.nachfolgerAktiv && l.hinweis) teile.push(l.hinweis);
   if (l.gueltig_ab && !x.kursbeginn && st === STATUS.PASST) { st = STATUS.PRUEFEN; teile.push(`Das Gesetz gilt ab ${l.gueltig_ab.split('-').reverse().join('.')}; vorher besteht kein Anspruch.`); }
   if (x.art === 'sprache') { if (st === STATUS.PASST) st = STATUS.PRUEFEN; teile.push('Sprachkurse zählen nur, wenn die Veranstaltung im Land anerkannt ist.'); }
   return { ...out(e, st, teile.join(' '), `Nur anerkannte Veranstaltungen; Antrag beim Arbeitgeber spätestens ${l.frist_wochen} Wochen vor Beginn.`), ...ex, name, tage };
@@ -201,9 +223,12 @@ function aufstiegsBafoeg(e, x) {
   const w = e.werte;
   if (x.art !== 'meister') return out(e, STATUS.NEIN, 'Gefördert wird die Vorbereitung auf Fortbildungsabschlüsse wie Meister, Fachwirt, Techniker oder Erzieher (über 700 Abschlüsse).', 'Wenn Ihr Ziel ein solcher Abschluss ist, „Meister/Fachwirt“ wählen.');
   const p = [];
-  if (x.gesamtstunden && x.gesamtstunden < w.mindest_unterrichtsstunden) p.push(`Der Lehrgang muss mindestens ${w.mindest_unterrichtsstunden} Unterrichtsstunden umfassen (angegeben: ${x.gesamtstunden}).`);
+  const ausnahme53b = x.gesamtstunden && x.gesamtstunden >= w.mindest_unterrichtsstunden_53b && x.gesamtstunden < w.mindest_unterrichtsstunden;
+  if (x.gesamtstunden && x.gesamtstunden < w.mindest_unterrichtsstunden_53b) p.push(`Der Lehrgang muss mindestens ${w.mindest_unterrichtsstunden} Unterrichtsstunden umfassen, in der Ausnahme nach § 2 Abs. 3 Satz 2 AFBG mindestens ${w.mindest_unterrichtsstunden_53b} (angegeben: ${x.gesamtstunden}).`);
   if (x.dauerMonate && x.dauerMonate > w.teilzeit_monate_max) p.push(`Teilzeitlehrgänge müssen innerhalb von ${w.teilzeit_monate_max} Monaten abgeschlossen sein.`);
+  else if (ausnahme53b && x.dauerMonate && x.dauerMonate > w.teilzeit_monate_max_53b) p.push(`Lehrgänge mit ${w.mindest_unterrichtsstunden_53b} bis ${w.mindest_unterrichtsstunden - 1} Unterrichtsstunden müssen innerhalb von ${w.teilzeit_monate_max_53b} Monaten abgeschlossen sein.`);
   if (p.length) return out(e, STATUS.NEIN, p.join(' '), 'Lehrgangsanbieter nach Stundenzahl und Laufzeit fragen.');
+  if (ausnahme53b) return out(e, STATUS.PRUEFEN, `Regulär sind ${w.mindest_unterrichtsstunden} Unterrichtsstunden nötig. Ab ${w.mindest_unterrichtsstunden_53b} Stunden ist ein Lehrgang nur förderfähig, wenn er in Teilzeit stattfindet, innerhalb von ${w.teilzeit_monate_max_53b} Monaten endet und auf einen Abschluss nach § 53b BBiG bzw. § 42b HwO (oder einen gleichwertigen) vorbereitet (§ 2 Abs. 3 Satz 2 AFBG).`, 'Beim Anbieter klären, ob der Abschluss unter § 53b BBiG oder § 42b HwO fällt und der Lehrgang in Teilzeit läuft.');
   const zuschuss = x.kosten ? Math.min(x.kosten, w.gebuehren_max_eur) * w.zuschuss_prozent / 100 : null;
   return out(e, x.gesamtstunden ? STATUS.PASST : STATUS.PRUEFEN, `Keine Altersgrenze. Lehrgangs- und Prüfungsgebühren bis ${eur(w.gebuehren_max_eur)}, davon ${w.zuschuss_prozent} % Zuschuss${zuschuss != null ? ` – bei Ihren Kosten ${eur(zuschuss)}` : ''}; der Rest als KfW-Darlehen, von dem nach bestandener Prüfung ${w.erlass_bestanden_prozent} % erlassen werden.`, 'Antrag bei der zuständigen Stelle Ihres Landes oder über „AFBG Digital“ – möglichst vor Lehrgangsbeginn.', { betrag: zuschuss });
 }

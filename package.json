@@ -9,6 +9,7 @@
     "build:preview-ads": "node scripts/build.mjs --preview-ads --out=.preview",
     "test": "node --test tests/*.test.mjs",
     "check": "node scripts/check-pages.mjs",
-    "e2e": "node scripts/e2e.mjs"
+    "e2e": "node scripts/e2e.mjs",
+    "test:consent": "node scripts/consent-e2e.mjs"
   }
 }
