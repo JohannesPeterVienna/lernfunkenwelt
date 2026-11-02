@@ -2,16 +2,16 @@
 
 Stand: 31.10.2026. GitHub Pages kann weder 301 noch 410 senden. Bis zum Umzug liefert `docs/` deshalb
 kleine Ersatzseiten aus: Weiterleitungen als `meta refresh` + `canonical` auf das Ziel (noindex),
-entfernte Kinderinhalte als noindex-Seite „Inhalt entfernt“ mit Link zur Startseite.
+entfernte Kinderinhalte sind seit 2.11.2026 gelöscht (GitHub Pages liefert 404).
 Sobald ein Server mit Weiterleitungsregeln (z. B. World4You `.htaccess`) davorsteht, die Spalte „Server-Regel“ umsetzen.
 
 | Alt-URL | Neue URL | Server-Regel | Übergang auf GitHub Pages |
 |---|---|---|---|
 | https://lernfunkenwelt.de/ | https://lernfunkenwelt.de/ | bleibt (neuer Inhalt) | – |
-| https://lernfunkenwelt.de/zehneruebergang.html | – | 410 Gone | noindex-Seite „Inhalt entfernt“ |
-| https://lernfunkenwelt.de/stellenwerte.html | – | 410 Gone | noindex-Seite „Inhalt entfernt“ |
-| https://lernfunkenwelt.de/rechenfehler-pruefen.html | – | 410 Gone | noindex-Seite „Inhalt entfernt“ |
-| https://lernfunkenwelt.de/parents.html | – | 410 Gone | noindex-Seite „Inhalt entfernt“ |
+| https://lernfunkenwelt.de/zehneruebergang.html | – | 404 | Datei entfernt (2.11.2026) |
+| https://lernfunkenwelt.de/stellenwerte.html | – | 404 | Datei entfernt (2.11.2026) |
+| https://lernfunkenwelt.de/rechenfehler-pruefen.html | – | 404 | Datei entfernt (2.11.2026) |
+| https://lernfunkenwelt.de/parents.html | – | 404 | Datei entfernt (2.11.2026) |
 | https://lernfunkenwelt.de/das-dass.html | https://lernfunkenwelt.de/rechtschreibung/ | 301 | meta refresh + canonical |
 | https://lernfunkenwelt.de/about.html | https://lernfunkenwelt.de/ueber-uns/ | 301 | meta refresh + canonical |
 | https://lernfunkenwelt.de/imprint.html | https://lernfunkenwelt.de/impressum/ | 301 | meta refresh + canonical |
