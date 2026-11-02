@@ -26,10 +26,12 @@ for (const f of files) {
   if (!/<html lang="de">/.test(h)) err('lang="de" fehlt');
   if (!/<meta name="google-adsense-account" content="ca-pub-7811071715414905">/.test(h)) err('AdSense-Meta fehlt');
   const ohneWerbung = isRedirect || noindex;
+  const rechtsseite = NO_ADS.includes(path);
   if (ohneWerbung && /adsbygoogle\.js/.test(h)) err('AdSense-Loader auf Weiterleitungs-/noindex-Seite');
+  if (rechtsseite && /adsbygoogle\.js/.test(h)) err('AdSense-Loader auf Rechtsseite (wird erst beim Klick auf Datenschutz-Einstellungen nachgeladen)');
   if (!/gtag\('consent','default',\{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500\}\)/.test(h)) err('Consent-Default fehlt');
   else if (/adsbygoogle\.js/.test(h) && h.indexOf("gtag('consent','default'") > h.indexOf('adsbygoogle.js')) err('Consent-Default nach AdSense-Loader');
-  if (!ohneWerbung && (!/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-7811071715414905" crossorigin="anonymous"><\/script>/.test(h) || !/<script async src="https:\/\/pagead2/.test(h))) err('adsbygoogle.js async fehlt');
+  if (!ohneWerbung && !rechtsseite && (!/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js\?client=ca-pub-7811071715414905" crossorigin="anonymous"><\/script>/.test(h) || !/<script async src="https:\/\/pagead2/.test(h))) err('adsbygoogle.js async fehlt');
   if (/googletagmanager\.com\/gtag\/js/.test(h)) err('GA4 wird ohne Einwilligung geladen');
   if (!/data-privacy-settings/.test(h)) err('Link Datenschutz-Einstellungen fehlt');
   const h1 = (h.match(/<h1[\s>]/g) || []).length;

@@ -3,6 +3,8 @@
 // Reihenfolge im <head> (scripts/build.mjs):
 //   1. Inline-Skript: gtag('consent','default', alles 'denied', wait_for_update 500)
 //   2. adsbygoogle.js – bringt die Google-CMP (Privacy & Messaging, IAB TCF) mit
+//      (nicht auf Rechtsseiten: dort lädt datenschutzLinks() das Skript erst beim Klick
+//      auf „Datenschutz-Einstellungen“ nach)
 //   3. dieses Skript (defer)
 //
 // Google Analytics 4 wird nur geladen bzw. aktiv gehalten, wenn
@@ -35,7 +37,7 @@
     gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', wait_for_update: 500 });
   }
 
-  const zustand = { tc: null, gaGeladen: false, aktiv: false, gemeldet: null };
+  const zustand = { tc: null, gaGeladen: false, aktiv: false, gemeldet: null, tcfLauscht: false, tcfSucht: false };
 
   /** TCF-Signal: 'ja' | 'nein' | 'offen' (keine Entscheidung) | 'ausserhalb' (DSGVO gilt nicht). */
   function tcfSignal(tc) {
@@ -123,10 +125,14 @@
   }
 
   function lauscheTcf(versuche) {
+    if (zustand.tcfLauscht) return;
     if (typeof window.__tcfapi !== 'function') {
+      zustand.tcfSucht = versuche > 0;
       if (versuche > 0) setTimeout(() => lauscheTcf(versuche - 1), 400);
       return;
     }
+    zustand.tcfSucht = false;
+    zustand.tcfLauscht = true;
     // Der Listener feuert bei jeder Änderung der Auswahl erneut (auch Widerruf).
     window.__tcfapi('addEventListener', 2, (tc, ok) => {
       if (!ok || !tc) return;
@@ -156,19 +162,34 @@
     });
   }
 
+  /** Rechtsseiten laden adsbygoogle.js (und damit die CMP) erst auf ausdrücklichen Wunsch. */
+  function ladeCmpNach() {
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) return;
+    const meta = document.querySelector('meta[name="google-adsense-account"]');
+    if (!meta || !meta.content) return;
+    const s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(meta.content);
+    document.head.appendChild(s);
+    if (!zustand.tcfSucht) lauscheTcf(25);
+  }
+
   function datenschutzLinks() {
-    const cmpGeladen = !!document.querySelector('script[src*="adsbygoogle.js"]');
     document.querySelectorAll('[data-privacy-settings]').forEach(b => {
       b.addEventListener('click', ev => {
         ev.preventDefault();
-        if (!cmpGeladen) { location.href = '/datenschutz/'; return; }
+        ladeCmpNach();
         const fc = window.googlefc;
         if (fc && typeof fc.showRevocationMessage === 'function') {
           fc.showRevocationMessage();
         } else {
           window.googlefc = window.googlefc || {};
           window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
-          window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() });
+          if (!zustand.widerrufWartet) {
+            zustand.widerrufWartet = true;
+            window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => { zustand.widerrufWartet = false; window.googlefc.showRevocationMessage(); } });
+          }
           const hinweis = document.getElementById('privacy-hint');
           if (hinweis) { hinweis.hidden = false; hinweis.textContent = 'Die Einstellungen öffnen sich, sobald der Einwilligungsdialog geladen ist. Ein Werbeblocker kann das verhindern.'; }
         }

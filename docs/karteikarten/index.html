@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="/assets/css/site.css">
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7811071715414905" crossorigin="anonymous"></script>
-<script defer src="/assets/js/einwilligung.js?v=20261031c"></script>
+<script defer src="/assets/js/einwilligung.js?v=20261102a"></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://lernfunkenwelt.de/"},{"@type":"ListItem","position":2,"name":"Karteikarten","item":"https://lernfunkenwelt.de/karteikarten/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Karteikarten mit Prüfungstermin","url":"https://lernfunkenwelt.de/karteikarten/","applicationCategory":"EducationalApplication","operatingSystem":"Browser","inLanguage":"de","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"publisher":{"@type":"Organization","name":"AdStern","url":"https://lernfunkenwelt.de/","address":{"@type":"PostalAddress","streetAddress":"Seilerstätte 8","postalCode":"1010","addressLocality":"Wien","addressCountry":"AT"}}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Brauche ich ein Konto?","acceptedAnswer":{"@type":"Answer","text":"Nein. Die Karten liegen in Ihrem Browser. Wenn Sie „speichern“ ankreuzen, bleiben sie nach dem Schließen erhalten; sonst nur für die aktuelle Sitzung. Für ein anderes Gerät nutzen Sie die Sicherungsdatei."}},{"@type":"Question","name":"Kann ich Anki-Karten übernehmen?","acceptedAnswer":{"@type":"Answer","text":"Exportieren Sie in Anki als „Notizen als Klartext“ und speichern Sie die Datei mit der Endung .csv. Das Werkzeug erkennt Tabulator-getrennte Dateien; Formatierungen gehen dabei verloren."}},{"@type":"Question","name":"Gibt es eine Tastaturbedienung?","acceptedAnswer":{"@type":"Answer","text":"Ja. Mit der Tabulatortaste erreichen Sie alle Schaltflächen. Nach dem Aufdecken bewertet die Taste 1 mit „noch nicht“ und die Taste 2 mit „gewusst“."}}]}</script>
@@ -43,7 +43,7 @@
 <div class="prose">
 <h1>Karteikarten online ohne Anmeldung</h1>
 <p class="lead">Frage lesen, Antwort im Kopf formulieren, umdrehen, ehrlich bewerten. Gewusste Karten wandern ein Fach weiter und kommen später wieder, nicht gewusste starten von vorn. Anders als viele Apps richtet sich dieses Werkzeug nach Ihrem Prüfungstag: Keine Karte wird erst danach fällig.</p>
-<p class="meta-line"><span>Ohne Konto</span><span>Daten bleiben auf Ihrem Gerät</span><span>Nachfolger des Abruftrainers</span></p>
+<p class="meta-line"><span>Ohne Konto</span><span>Daten bleiben auf Ihrem Gerät</span><span>CSV-Import und Druckbögen</span></p>
 </div>
 
 <section class="tool" aria-labelledby="k-h">
@@ -59,6 +59,7 @@
   <p id="k-frage" class="flash__q" tabindex="-1">Noch keine Runde gestartet.</p>
   <p id="k-antwort" class="flash__a" hidden></p>
 </article>
+<div id="k-leer-aktion" class="btn-row" hidden><button type="button" id="k-beispielstapel" class="btn btn--ghost">Beispielstapel laden</button></div>
 <div class="btn-row"><button type="button" id="k-aufdecken" class="btn" hidden>Antwort zeigen</button></div>
 <div id="k-bewertung" class="btn-row" hidden><button type="button" id="k-nicht" class="btn btn--ghost">Noch nicht (1)</button><button type="button" id="k-gewusst" class="btn">Gewusst (2)</button></div>
 <div id="k-faecher" class="boxes" aria-label="Karten je Fach"></div>

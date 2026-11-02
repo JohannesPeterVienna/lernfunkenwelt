@@ -13,6 +13,10 @@
 @font-face{font-family:"Atkinson Hyperlegible Next";src:url("../fonts/atkinson-hyperlegible-next-latin-ext-700-normal.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+A720-A7FF}
 @font-face{font-family:"Atkinson Hyperlegible Next";src:url("../fonts/atkinson-hyperlegible-next-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
 @font-face{font-family:"IBM Plex Mono";src:url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+/* Ziffern im Fließtext: Atkinson Hyperlegible Next zeichnet die Null durchgestrichen (wirkt wie „Ø“).
+   Deshalb kommen die Ziffern 0–9 der Grundschrift aus IBM Plex Mono (Tabellenziffern, Null ohne Strich),
+   wie im Konzept für Zahlen vorgesehen; size-adjust gleicht die Höhe an Atkinson an. */
+@font-face{font-family:"LFW Ziffern";src:url("../fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0030-0039;size-adjust:96%}
 
 :root{
   --paper:#F5F3F7; --card:#FFFFFF; --ink:#231B2E; --muted:#5D5469; --line:#DCD6E3;
@@ -20,7 +24,7 @@
   --ok-bg:#E6F2EC; --warn-bg:#FBF1D9; --bad-bg:#F8E6E3; --tint:#EEE8F4;
   --focus:#6A3A94; --shadow:0 1px 0 rgba(35,27,46,.06),0 8px 24px -16px rgba(35,27,46,.25);
   --serif:"Literata",Georgia,"Times New Roman",serif;
-  --sans:"Atkinson Hyperlegible Next","Segoe UI",system-ui,sans-serif;
+  --sans:"LFW Ziffern","Atkinson Hyperlegible Next","Segoe UI",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
   --radius:6px; --wrap:1180px; --measure:70ch;
   color-scheme:light;
@@ -41,6 +45,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.65 var(--sans);overflow-wrap:break-word}
 img,svg{max-width:100%;height:auto}
@@ -51,6 +56,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.22;letter-spa
 h1{font-size:clamp(2rem,1.4rem + 2.6vw,3rem);margin-top:.2em}
 h2{font-size:clamp(1.5rem,1.2rem + 1.2vw,1.95rem)}
 h3{font-size:1.25rem}
+@media (max-width:520px){h1,h2{-webkit-hyphens:auto;hyphens:auto}}
 p,ul,ol,table,dl{margin:0 0 1em}
 li{margin:.25em 0}
 small,.small{font-size:.9rem}
@@ -152,6 +158,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
 .tool{background:var(--card) repeating-linear-gradient(to bottom,transparent 0 31px,color-mix(in srgb,var(--line) 55%,transparent) 31px 32px);border:1px solid var(--line);border-radius:var(--radius);padding:1.25rem 16px;margin:1.5rem 0 2.5rem;box-shadow:var(--shadow)}
 @media (min-width:700px){.tool{padding:1.75rem 1.75rem}}
 .tool > h2:first-child{margin-top:0}
+/* Überschriften auf vollem Grund, damit die Liniatur nicht wie Durchstreichen wirkt */
+.tool h2,.tool h3,.tool h4{background:var(--card);box-shadow:0 .2rem 0 var(--card),0 -.2rem 0 var(--card)}
 .result{margin-top:1.5rem}
 .result:empty{display:none}
 .result h3{margin-top:0}

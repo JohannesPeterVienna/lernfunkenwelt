@@ -80,6 +80,8 @@ const adIn = () => adBox('incontent', SLOTS.incontent, '', 0, 250, 'auto');
 const adSide = () => adBox('side', SLOTS.sidebar, '', 300, 600);
 
 // ---------- Seiten ----------
+// Rechtsseiten (Impressum, Datenschutz, Kontakt) laden adsbygoogle.js nicht; die Google-CMP
+// wird dort erst beim Klick auf „Datenschutz-Einstellungen“ nachgeladen (assets/js/einwilligung.js).
 const SRC = join(ROOT, 'src/pages');
 const files = readdirSync(SRC).filter(f => f.endsWith('.html')).sort();
 const pages = [];
@@ -158,7 +160,7 @@ ${refresh}
 <link rel="preload" href="/assets/fonts/literata-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/site.css">
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
-${p.removed || p.redirect || p.out === '404.html' ? '' : `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUB}" crossorigin="anonymous"></script>\n`}<script defer src="/assets/js/einwilligung.js?v=20261031c"></script>
+${p.removed || p.redirect || p.out === '404.html' || p.type === 'legal' ? '' : `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUB}" crossorigin="anonymous"></script>\n`}<script defer src="/assets/js/einwilligung.js?v=20261102a"></script>
 ${jsonld(p, url, faqs)}
 </head>
 <body class="page-${p.type || 'page'}">

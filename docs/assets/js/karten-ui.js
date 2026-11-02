@@ -44,6 +44,9 @@ function zeichne() {
     el('li', {}, el('div', {}, el('div', { class: 'q', text: k.vorne }), el('div', { class: 'a', text: k.hinten }), el('div', { class: 'small', text: `${k.thema || 'ohne Thema'} · Fach ${k.fach} · fällig ${kurz(k.faellig)}` })),
       el('button', { type: 'button', class: 'btn btn--ghost btn--small', 'aria-label': 'Karte löschen: ' + k.vorne, text: 'Löschen', onclick: () => { stand.karten = stand.karten.filter(x => x.id !== k.id); sichern(); } }))));
   $('k-leer').hidden = stand.karten.length > 0;
+  // Leerer Stapel: nur „Beispielstapel laden“ anbieten, keine Abfrage-Knöpfe
+  $('k-leer-aktion').hidden = stand.karten.length > 0;
+  if (!stand.karten.length) { $('k-aufdecken').hidden = true; $('k-bewertung').hidden = true; $('k-antwort').hidden = true; }
   // Druckkarten
   const pc = $('k-druck');
   pc.replaceChildren(...stand.karten.slice(0, 200).flatMap(k => [el('div', { class: 'pc', text: k.vorne }), el('div', { class: 'pc', text: k.hinten })]));
@@ -108,6 +111,7 @@ $('k-form').addEventListener('submit', e => {
   $('k-vorne').focus();
 });
 $('k-beispiel').addEventListener('click', () => { BEISPIEL.forEach(([v, h, t], i) => stand.karten.push(neueKarte(v, h, t, heute, 'bsp' + i + Date.now().toString(36)))); sichern(); $('k-status').textContent = 'Fünf Beispielkarten angelegt.'; });
+$('k-beispielstapel').addEventListener('click', () => { $('k-beispiel').click(); starte(false); });
 $('k-csv-export').addEventListener('click', () => download('karteikarten.csv', zuCsv(stand.karten), 'text/csv;charset=utf-8'));
 $('k-json-export').addEventListener('click', () => download('karteikarten-sicherung.json', JSON.stringify(zuSicherung(stand.karten, stand.pruefung), null, 1), 'application/json'));
 $('k-drucken').addEventListener('click', () => window.print());
