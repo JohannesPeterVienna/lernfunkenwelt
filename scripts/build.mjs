@@ -93,7 +93,7 @@ for (const f of files) {
   pages.push({ ...meta, body: raw.slice(m[0].length).trim(), file: f });
 }
 
-const ORG = { '@type': 'Organization', name: 'AdStern', url: ORIGIN + '/', address: { '@type': 'PostalAddress', streetAddress: 'Seilerstätte 8', postalCode: '1010', addressLocality: 'Wien', addressCountry: 'AT' } };
+const ORG = { '@type': 'Organization', name: 'AdStern – Agentur für digitales Marketing', url: ORIGIN + '/', address: { '@type': 'PostalAddress', streetAddress: 'Seilerstätte 8/8', postalCode: '1010', addressLocality: 'Wien', addressCountry: 'AT' } };
 
 function jsonld(p, url, faqs) {
   const out = [];

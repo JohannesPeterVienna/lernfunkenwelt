@@ -75,7 +75,7 @@ for (const f of files) {
 }
 // Pflichtangaben
 const imp = readFileSync(join(DOCS, 'impressum/index.html'), 'utf8');
-for (const s of ['Seilerstätte 8', '1010 Wien', 'office@adstern.com', 'ATU54682507', 'Magistratisches Bezirksamt für den 1./8. Bezirk', 'Fachgruppe Werbung und Marktkommunikation', 'Werbeagentur', 'Gewerbeordnung']) if (!imp.includes(s)) fehler.push('Impressum: fehlt ' + s);
+for (const s of ['Seilerstätte 8/8', '1010 Wien', 'office@adstern.com', 'ATU54682507', 'Magistratisches Bezirksamt für den 1./8. Bezirk', 'Fachgruppe Werbung und Marktkommunikation', 'Werbeagentur', 'Gewerbeordnung']) if (!imp.includes(s)) fehler.push('Impressum: fehlt ' + s);
 if (/Tel\.|Telefon|\+43/.test(strip(imp))) fehler.push('Impressum: Telefonnummer gefunden');
 const ds = readFileSync(join(DOCS, 'datenschutz/index.html'), 'utf8');
 for (const s of ['GitHub', 'Drittanbieter, einschließlich Google, verwenden Cookies', 'adssettings.google.com', 'youronlinechoices', 'aboutads.info', 'Barichgasse 40–42', 'dsb@dsb.gv.at', 'delete-local', 'localStorage']) if (!ds.includes(s)) fehler.push('Datenschutz: fehlt ' + s);
