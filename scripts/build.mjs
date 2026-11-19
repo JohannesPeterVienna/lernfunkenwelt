@@ -3,6 +3,7 @@
 // und schreibt statisches HTML nach docs/. Nur für diese Website geschrieben.
 //   node scripts/build.mjs                 → docs/
 //   node scripts/build.mjs --preview-ads --out=.preview  → Vorschau mit Platzhaltern
+//   node scripts/build.mjs --test-slots --out=.test-ads   → echtes Anzeigen-Markup mit Prüf-Slot-ID (nur für scripts/werbeplaetze-e2e.mjs)
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -16,9 +17,13 @@ const cfg = JSON.parse(readFileSync(join(ROOT, 'config/site.json'), 'utf8'));
 const ORIGIN = cfg.origin;
 const PUB = cfg.adsense.client;
 const SLOTS = { ...cfg.adsense.slots };
+const TESTSLOTS = !!args['test-slots'];
 if (PREVIEW) for (const k of Object.keys(SLOTS)) SLOTS[k] = SLOTS[k] || 'VORSCHAU';
+if (TESTSLOTS) for (const k of Object.keys(SLOTS)) SLOTS[k] = SLOTS[k] || '1234567890';
+if (TESTSLOTS && OUT === join(ROOT, 'docs')) throw new Error('--test-slots nur mit --out=<Prüfordner>, nie nach docs/');
+const CSS_V = '20261119a'; // bei jeder Änderung an assets/css/site.css erhöhen
 
-if (PREVIEW && OUT !== join(ROOT, 'docs')) {
+if ((PREVIEW || TESTSLOTS) && OUT !== join(ROOT, 'docs')) {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(OUT, { recursive: true });
   for (const d of ['assets', 'data']) cpSync(join(ROOT, 'docs', d), join(OUT, d), { recursive: true });
@@ -68,16 +73,41 @@ function footer() {
 }
 
 // ---------- Werbeplätze ----------
-function adBox(kind, slot, sizeCls, w, h, fmt) {
-  if (!slot) return '';
-  const inner = PREVIEW
-    ? `<div class="ad__box preview" style="width:${w ? w + 'px' : '100%'};max-width:100%">Anzeigenplatz ${w ? w + '×' + h : 'responsiv'}</div>`
-    : `<div class="ad__box"><ins class="adsbygoogle" style="display:${w ? 'inline-block' : 'block'};${w ? `width:${w}px;height:${h}px` : ''}" data-ad-client="${PUB}" data-ad-slot="${esc(slot)}"${fmt ? ` data-ad-format="${fmt}" data-full-width-responsive="true"` : ''}></ins></div>`;
-  return `<aside class="ad ad--${kind} ${sizeCls}" aria-label="Anzeige"><span class="ad__label">Anzeige</span>${inner}</aside>`;
+// Oben (unter der Kopfzeile, vor Brotkrumen und H1) steht je Seite genau ein sichtbarer Platz:
+//   bis 767 px       320×100 (Slot mobileBanner)
+//   768–1039 px      728×90  (Slot leaderboard)
+//   ab 1040 px       970×250 auf Ratgeber-/Übersichtsseiten („gross“), 970×90 auf Startseite und
+//                    Werkzeugseiten („flach“), damit Einstieg bzw. Werkzeug im ersten Bildschirm beginnen.
+// Die Größen setzt ein <style> im Seitenkopf über Klassen und Media Queries – das von Google
+// beschriebene Muster („How to modify your responsive ad code“, support.google.com/adsense/answer/9183363);
+// Größen in einer externen CSS-Datei sind dort ausdrücklich nicht unterstützt. Ein Platz, der bei
+// der Breite nicht passt, bekommt display:none und stellt keine Anfrage.
+const AD_SIZE_CSS = `<style>
+.lfw_oben_mobil{display:block;width:320px;height:100px}
+.lfw_oben_gross,.lfw_oben_flach{display:none}
+@media(min-width:768px){.lfw_oben_mobil{display:none}.lfw_oben_gross,.lfw_oben_flach{display:block;width:728px;height:90px}}
+@media(min-width:1040px){.lfw_oben_gross{width:970px;height:250px}.lfw_oben_flach{width:970px;height:90px}}
+</style>`;
+function adFrame(kind, cls, inner) {
+  return `<aside class="ad ad--${kind}${cls ? ' ' + cls : ''}" aria-label="Anzeige"><span class="ad__label">Anzeige</span><div class="ad__box">${inner}</div></aside>`;
 }
-const adTop = () => (SLOTS.leaderboard ? adBox('top', SLOTS.leaderboard, 'ad--desk', 728, 90) : '') + (SLOTS.mobileBanner ? adBox('top', SLOTS.mobileBanner, 'ad--mob', 320, 100) : '');
-const adIn = () => adBox('incontent', SLOTS.incontent, '', 0, 250, 'auto');
-const adSide = () => adBox('side', SLOTS.sidebar, '', 300, 600);
+function adTopUnit(slot, sizeCls, cls, text) {
+  if (!slot) return '';
+  return adFrame('top', cls, PREVIEW
+    ? `<div class="preview ${sizeCls}">${text}</div>`
+    : `<ins class="adsbygoogle ${sizeCls}" data-ad-client="${PUB}" data-ad-slot="${esc(slot)}"></ins>`);
+}
+function adBox(kind, slot, w, h, fmt) {
+  if (!slot) return '';
+  return adFrame(kind, '', PREVIEW
+    ? `<div class="preview" style="width:${w ? w + 'px' : '100%'};max-width:100%;min-height:${h}px">Anzeigenplatz ${w ? w + '×' + h : 'responsiv'}</div>`
+    : `<ins class="adsbygoogle" style="display:${w ? 'inline-block' : 'block'};${w ? `width:${w}px;height:${h}px` : ''}" data-ad-client="${PUB}" data-ad-slot="${esc(slot)}"${fmt ? ` data-ad-format="${fmt}" data-full-width-responsive="true"` : ''}></ins>`);
+}
+const adTop = gross => adTopUnit(SLOTS.leaderboard, gross ? 'lfw_oben_gross' : 'lfw_oben_flach', `ad--desk ad--${gross ? 'gross' : 'flach'}`, `Anzeigenplatz ${gross ? '970×250' : '970×90'} (768–1039 px: 728×90)`)
+  + adTopUnit(SLOTS.mobileBanner, 'lfw_oben_mobil', 'ad--mob', 'Anzeigenplatz 320×100');
+const adIn = () => adBox('incontent', SLOTS.incontent, 0, 250, 'auto');
+const adSide = () => adBox('side', SLOTS.sidebar, 300, 600);
+const HAT_OBEN = !!(SLOTS.leaderboard || SLOTS.mobileBanner);
 
 // ---------- Seiten ----------
 // Rechtsseiten (Impressum, Datenschutz, Kontakt) laden adsbygoogle.js nicht; die Google-CMP
@@ -125,6 +155,9 @@ const sitemap = [];
 for (const p of pages) {
   const url = ORIGIN + p.path;
   const ads = p.ads !== false && !p.redirect && !p.removed;
+  // Großer Platz oben (970×250) nur dort, wo der Text der Hauptinhalt ist; flach (970×90) auf der
+  // Startseite, auf Werkzeugseiten und auf kurzen Seiten (Meta "topAd":"flach").
+  const gross = p.topAd ? p.topAd === 'gross' : (p.type === 'article' || (p.type === 'page' && p.path !== '/'));
   let body = p.body;
   // Werbe-Markierungen im Text: <!--ANZEIGE-->
   body = body.replace(/<!--ANZEIGE-->/g, ads ? adIn() : '');
@@ -158,14 +191,14 @@ ${refresh}
 <link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/atkinson-hyperlegible-next-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/literata-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
+<link rel="stylesheet" href="/assets/css/site.css?v=${CSS_V}">
+${ads && HAT_OBEN ? AD_SIZE_CSS + '\n' : ''}<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});</script>
 ${p.removed || p.redirect || p.out === '404.html' || p.type === 'legal' ? '' : `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUB}" crossorigin="anonymous"></script>\n`}<script defer src="/assets/js/einwilligung.js?v=20261102a"></script>
 ${jsonld(p, url, faqs)}
 </head>
 <body class="page-${p.type || 'page'}">
 ${header(p.path)}
-${ads && p.path !== '/' ? `<div class="wrap">${adTop()}</div>` : ''}
+${ads && HAT_OBEN ? `<div class="wrap">${adTop(gross)}</div>` : ''}
 <main id="inhalt" class="wrap">
 ${crumbsHtml(p)}
 <div class="layout${side ? ' layout--side' : ''}">

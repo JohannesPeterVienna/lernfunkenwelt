@@ -54,6 +54,13 @@ for (const f of files) {
   if ((NO_ADS.includes(path) || noindex) && ads) err('Werbeplatz auf Seite ohne Werbung');
   if (/<ins class="adsbygoogle"(?![^>]*data-ad-slot="[^"]+")/.test(h)) err('Werbeplatz ohne Slot-ID');
   if (/<aside class="ad[^"]*"[\s\S]{0,400}?<\/aside>/.test(h) && !/<span class="ad__label">Anzeige<\/span>/.test(h)) err('Anzeige ohne Beschriftung');
+  // Platz oben: höchstens je einer für Desktop und Mobil, vor <main>, Größen-<style> im Kopf, <ins> ohne Inline-Verstecken
+  const oben = (h.match(/class="ad ad--top /g) || []).length;
+  if (oben > 2) err(`${oben} Plätze oben`);
+  if (oben && h.indexOf('class="ad ad--top ') > h.indexOf('<main')) err('Platz oben steht nicht vor dem Inhalt');
+  if (oben && !/<style>\n\.lfw_oben_mobil\{display:block;width:320px;height:100px\}/.test(h)) err('Größenangaben für den Platz oben fehlen im Kopf');
+  if (/<ins class="adsbygoogle[^>]*display:\s*none/.test(h)) err('<ins> per Inline-Stil versteckt');
+  if (/data-ad-status=/.test(h)) err('data-ad-status im Quelltext (setzt nur Google)');
   // Werbeplatz darf nicht im Werkzeugbereich liegen
   for (const m of h.matchAll(/<section class="tool"[\s\S]*?<\/section>/g)) if (/class="ad /.test(m[0])) err('Werbeplatz innerhalb eines Werkzeugs');
   // JSON-LD
@@ -83,6 +90,10 @@ for (const f of ['ads.txt', 'robots.txt', 'sitemap.xml', 'CNAME', '.nojekyll', '
 if (existsSync(join(DOCS, 'ads.txt')) && readFileSync(join(DOCS, 'ads.txt'), 'utf8').trim() !== 'google.com, pub-7811071715414905, DIRECT, f08c47fec0942fa0') fehler.push('ads.txt falsch');
 const sm = readFileSync(join(DOCS, 'sitemap.xml'), 'utf8');
 for (const m of sm.matchAll(/<loc>([^<]+)<\/loc>/g)) { const p = m[1].replace(ORIGIN, ''); if (!existsSync(join(DOCS, p.endsWith('/') ? p + 'index.html' : p))) fehler.push('Sitemap-URL ohne Datei ' + p); }
+// Werbeplätze nie sticky/fixed, leere Plätze fallen weg
+const css = readFileSync(join(DOCS, 'assets/css/site.css'), 'utf8');
+if (/\.ad[^{}]*\{[^}]*position:\s*(sticky|fixed)/.test(css)) fehler.push('site.css: Werbeplatz sticky/fixed');
+if (!css.includes('ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important}')) fehler.push('site.css: Regel für leere Plätze fehlt');
 // Kinderbezug
 for (const f of files) { const t = readFileSync(f, 'utf8'); if (/data-age-check|kleine Entdecker|Für Eltern/i.test(t)) fehler.push('Kinderbezug in ' + f); }
 

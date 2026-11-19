@@ -81,7 +81,9 @@ small,.small{font-size:.9rem}
   .menu summary{list-style:none;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--line);border-radius:var(--radius);font-weight:700}
   .menu summary::-webkit-details-marker{display:none}
   .menu[open] summary{background:var(--tint)}
-  .menu__list{position:absolute;left:16px;right:16px;margin-top:.5rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:.5rem;z-index:20;columns:2;column-gap:.5rem}
+  /* Das offene Menü liegt im Seitenfluss und schiebt den Inhalt nach unten – es überdeckt weder Text noch einen Anzeigenplatz. */
+  .site-head__in:has(.menu[open]){align-items:flex-start}
+  .menu__list{width:calc(100vw - 32px);max-width:calc(var(--wrap) - 32px);margin:.5rem 0 0 calc(100% - min(100vw,var(--wrap)) + 32px);background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:.5rem;columns:2;column-gap:.5rem}
   .menu__list a{display:block;padding:.55rem .6rem;color:var(--ink);text-decoration:none;break-inside:avoid}
   .menu__list a:hover{background:var(--tint)}
 }
@@ -242,25 +244,32 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px soli
 .sources li{margin:.45em 0}
 .stand{display:inline-block;font-family:var(--mono);font-size:.85rem;background:var(--tint);border-radius:4px;padding:.05rem .4rem;color:var(--ink)}
 
-/* Werbeplätze: nur gerendert, wenn eine Slot-ID gesetzt ist */
+/* Werbeplätze: nur gerendert, wenn eine Slot-ID gesetzt ist.
+   Googles Muster für leere Plätze (support.google.com/adsense/answer/10762946): Das <ins> wird nie
+   vorab versteckt. Der Platz ist von Anfang an in Zielgröße reserviert (kein Sprung beim Füllen),
+   die Beschriftung erscheint erst bei data-ad-status="filled", bei "unfilled" fällt der Platz weg.
+   Die Größen des oberen Platzes stehen als <style> im Seitenkopf (scripts/build.mjs). */
 .ad{margin:2rem auto;text-align:center;clear:both}
-.ad__label{display:block;font:700 .75rem/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem}
-.ad ins{display:block;margin:0 auto}
+.ad__label{display:block;font:700 .75rem/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 .4rem;visibility:hidden}
+.ad:has(ins[data-ad-status="filled"]) .ad__label,.ad:has(.preview) .ad__label{visibility:visible}
+ins.adsbygoogle[data-ad-status="unfilled"]{display:none!important}
+.ad:has(ins[data-ad-status="unfilled"]){display:none}
+.ad__box{line-height:0}
+.ad ins,.ad .preview{margin:0 auto;max-width:100%;vertical-align:top;line-height:1.4}
 .ad--top{margin:1rem auto .5rem;max-width:100%}
-.ad--top .ad__box{min-height:100px;width:320px;max-width:100%;margin:0 auto}
-@media (min-width:768px){.ad--top .ad__box{min-height:90px;width:728px}}
+.ad--top .ad__box{min-height:100px}
 .ad--desk{display:none}
-@media (min-width:768px){.ad--desk{display:block}.ad--mob{display:none}}
+@media (min-width:768px){.ad--desk{display:block}.ad--mob{display:none}.ad--top .ad__box{min-height:90px}}
+@media (min-width:1040px){.ad--gross .ad__box{min-height:250px}}
 .ad--incontent .ad__box{min-height:280px;max-width:336px;margin:0 auto}
-@media (min-width:700px){.ad--desk{display:none}
-@media (min-width:768px){.ad--desk{display:block}.ad--mob{display:none}}
-.ad--incontent .ad__box{min-height:250px;max-width:100%}}
+@media (min-width:700px){.ad--incontent .ad__box{min-height:250px;max-width:100%}}
 .ad--side{display:none}
 @media (min-width:1100px){.ad--side{display:block;margin:0}.ad--side .ad__box{min-height:600px;width:300px}}
-.ad__box.preview{border:2px dashed var(--muted);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem}
+.ad .preview{border:2px dashed var(--muted);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem}
 .sidebar{display:none}
 @media (min-width:1100px){.sidebar{display:block}}
-.sidebar .card + .card,.sidebar .card + .ad,.sidebar .ad + .card{margin-top:1.5rem}
+.sidebar .card + .card{margin-top:1.5rem}
+.sidebar .card + .ad,.sidebar .ad + .card{margin-top:2.5rem}
 
 /* Produkt-Platzhalter (deaktiviert) */
 .product[hidden]{display:none!important}

@@ -31,7 +31,7 @@ for (const width of [360, 390, 1366]) {
     await page.goto(base + p, { waitUntil: 'networkidle' });
     const ov = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     if (ov > 0) fehler.push(`${width}px ${p}: horizontaler Überlauf ${ov}px`);
-    // Werbeplätze: Abstand zu interaktiven Elementen ≥ 24 px
+    // Werbeplätze: Abstand zu interaktiven Elementen ≥ 150 px
     const nah = await page.evaluate(() => {
       const out = [];
       const inter = [...document.querySelectorAll('main input, main select, main textarea, main button, main .btn, main .result:not(:empty)')].filter(e => e.offsetParent).map(e => e.getBoundingClientRect());
@@ -40,12 +40,12 @@ for (const width of [360, 390, 1366]) {
         const a = ad.getBoundingClientRect();
         for (const r of inter) {
           const dx = Math.max(0, r.left - a.right, a.left - r.right), dy = Math.max(0, r.top - a.bottom, a.top - r.bottom);
-          if (Math.max(dx, dy) < 24) { out.push(Math.round(Math.max(dx, dy))); break; }
+          if (Math.max(dx, dy) < 150) { out.push(Math.round(Math.max(dx, dy))); break; }
         }
       }
       return out;
     });
-    if (nah.length) fehler.push(`${width}px ${p}: Werbeplatz näher als 24 px an Bedienelement (${nah.join(',')})`);
+    if (nah.length) fehler.push(`${width}px ${p}: Werbeplatz näher als 150 px an Bedienelement (${nah.join(',')})`);
   }
   // Förder-Check
   await page.goto(base + '/foerder-check/');
