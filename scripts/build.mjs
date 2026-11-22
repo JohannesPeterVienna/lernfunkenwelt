@@ -8,6 +8,8 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync, rmSync
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const shopLink = readFileSync(new URL('./shop-link.html', import.meta.url), 'utf8');
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const PREVIEW = !!args['preview-ads'];
@@ -64,7 +66,7 @@ function footer() {
   const cols = FOOT.map(([t, l]) => `<div><h2>${t}</h2><ul>${l.map(([h, x]) => `<li><a href="${h}">${x}</a></li>`).join('')}</ul></div>`).join('');
   return `<footer class="site-foot"><div class="site-foot__in">${cols}</div>
 <div class="site-foot__base"><p>Lernfunkenwelt ist eine unabhängige Übersicht von AdStern, Wien – kein Angebot einer Behörde, des AMS, der Bundesagentur für Arbeit oder des waff. Inhalte für Erwachsene. Förderangaben sind Orientierung, verbindlich entscheidet die Förderstelle.</p>
-<p><button type="button" class="linkbtn" data-privacy-settings>Datenschutz-Einstellungen</button> <span id="privacy-hint" role="status" hidden></span> · <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p></div></footer>`;
+<p><button type="button" class="linkbtn" data-privacy-settings>Datenschutz-Einstellungen</button> <span id="privacy-hint" role="status" hidden></span> · <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p>${shopLink}</div></footer>`;
 }
 
 // ---------- Werbeplätze ----------
