@@ -155,6 +155,16 @@ function wien(e, x) {
   return out(e, STATUS.PASST, `Bei ${eur(x.netto)} netto gelten ${pr} %, höchstens ${eur(w.max_eur)}${b != null ? ` – rechnerisch ${eur(b)}` : ''}.`, 'Antrag vor Kursbeginn oder spätestens 4 Wochen danach; Auszahlung nach Kursende.', { betrag: b });
 }
 
+/** Betrag aus persönlich getragenen förderfähigen Kurskosten, begrenzt durch den bestätigten Restbetrag. */
+export function ooeBetrag(werte, art, eigenkosten, rest = Infinity) {
+  const suffixe = { meister: '_meister', sprache: '_sprache', paedagogik: '_paedagogik' };
+  const suffix = suffixe[art] || '';
+  const prozent = werte['prozent' + suffix];
+  const maximum = werte['max_eur' + suffix];
+  const betrag = Math.min(Math.round(eigenkosten * prozent) / 100, maximum, rest);
+  return { prozent, maximum, betrag };
+}
+
 function ooe(e, x) {
   const w = e.werte;
   if (x.region !== 'OOE') return out(e, STATUS.NEIN, 'Voraussetzung ist ein Hauptwohnsitz in Oberösterreich zu Kursbeginn.', 'Förderungen Ihres Bundeslandes prüfen.');
@@ -162,13 +172,11 @@ function ooe(e, x) {
   if (x.kosten && x.kosten < w.kurskosten_min_eur) return out(e, STATUS.NEIN, `Kurskosten unter ${eur(w.kurskosten_min_eur)} werden nicht gefördert.`, '');
   if (x.status === 'arbeitslos' && x.monate === 0) return out(e, STATUS.PRUEFEN, 'Arbeitslosengeld- oder Notstandshilfebeziehende sind förderbar, Arbeitsuchende ohne früheren Arbeitnehmerstatus nicht.', 'Status mit dem Land OÖ klären.');
   if (x.hochschule && x.brutto != null && x.brutto > w.akademiker_brutto_max_eur) return out(e, STATUS.NEIN, `Mit akademischem Abschluss gilt eine Grenze von ${eur(w.akademiker_brutto_max_eur)} brutto im Monat.`, '');
-  const meister = x.art === 'meister';
+  const { prozent: pr, maximum: max, betrag } = ooeBetrag(w, x.art, x.kosten);
+  const b = x.kosten ? betrag : null;
   const sprache = x.art === 'sprache';
-  const pr = meister ? w.prozent_meister : sprache ? w.prozent_sprache : w.prozent;
-  const max = meister ? w.max_eur_meister : sprache ? w.max_eur_sprache : w.max_eur;
-  const b = x.kosten ? Math.min(x.kosten * pr / 100, max) : null;
   const sprach = sprache ? ` Gefördert werden nur berufsspezifische Sprachkurse und Deutsch-Integrationskurse; für beide gilt der Höchstbetrag von ${eur(w.max_eur_sprache)}. Nicht berufsspezifische Sprachkurse sind ausgeschlossen.` : '';
-  return out(e, x.art === 'sprache' ? STATUS.PRUEFEN : STATUS.PASST, `${pr} % der Kurskosten, höchstens ${eur(max)} im Zeitraum 2023–2028${b != null ? ` – rechnerisch ${eur(b)}` : ''}. Prüfungsgebühren zählen nicht dazu.${sprach}`, 'Kurs bei zertifiziertem Anbieter belegen, 75 % Anwesenheit nachweisen, Antrag bis 6 Monate nach Kursende.', { betrag: b });
+  return out(e, x.art === 'sprache' ? STATUS.PRUEFEN : STATUS.PASST, `${pr} % der Kurskosten, höchstens ${eur(max)} im Zeitraum 2023–2028${b != null ? ` – bis zu ${eur(b)} vor Abzug enthaltener Prüfungsgebühren und anrechenbarer Zuschüsse` : ''}. Prüfungsgebühren zählen nicht dazu.${sprach}`, 'Kurs bei zertifiziertem Anbieter belegen, 75 % Anwesenheit nachweisen, Antrag bis 6 Monate nach Kursende.', { betrag: b });
 }
 
 // ---------- Deutschland ----------

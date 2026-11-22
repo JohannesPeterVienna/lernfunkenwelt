@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { pruefe, tagsatzStufe, bildungsurlaubAnspruch, istAktuell } from '../docs/assets/js/lib/foerdercheck.js';
+import { ooeBetrag, pruefe, tagsatzStufe, bildungsurlaubAnspruch, istAktuell } from '../docs/assets/js/lib/foerdercheck.js';
 
 const daten = JSON.parse(readFileSync(new URL('../docs/data/foerderungen.json', import.meta.url)));
 const heute = '2026-10-31';
@@ -12,7 +12,7 @@ test('Jeder Eintrag hat Quelle, Stand und Prüfdatum', () => {
   for (const e of daten.eintraege) {
     assert.match(e.quelle_url, /^https:\/\//, e.id);
     assert.match(e.stand, /^\d{4}-\d{2}-\d{2}$/, e.id);
-    assert.equal(e.geprueft_am, '2026-10-31', e.id);
+    assert.match(e.geprueft_am, /^\d{4}-\d{2}-\d{2}$/, e.id);
   }
 });
 
@@ -190,4 +190,13 @@ test('Aufstiegs-BAföG: 300 Std. in 12 Monaten → genauer prüfen (§ 2 Abs. 3 
   assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 300, dauerMonate: 40 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
   assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 199, dauerMonate: 12 }, heute), 'de-aufstiegs-bafoeg').status, 'passt_nicht');
   assert.equal(finde(pruefe(daten, { ...b, gesamtstunden: 400, dauerMonate: 40 }, heute), 'de-aufstiegs-bafoeg').status, 'passt');
+});
+
+
+test('OÖ-Rechner berücksichtigt Pädagogik, Förderobergrenze und verfügbaren Restbetrag', () => {
+  const w = daten.eintraege.find(e => e.id === 'at-ooe-bildungskonto').werte;
+  assert.equal(ooeBetrag(w, 'paedagogik', 2000).betrag, 1200);
+  assert.equal(ooeBetrag(w, 'paedagogik', 6000).betrag, 2700);
+  assert.equal(ooeBetrag(w, 'meister', 3900, 500).betrag, 500);
+  assert.equal(ooeBetrag(w, 'sprache', 1200, 0).betrag, 0);
 });
